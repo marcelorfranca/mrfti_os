@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class UnidadeMedida implements Serializable {
 
@@ -21,6 +23,7 @@ public class UnidadeMedida implements Serializable {
 	private Integer id;
 	private String nome;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="unidadeMedida")
 	private List<Produto> produtos = new ArrayList<>();
 	
