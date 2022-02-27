@@ -1,6 +1,7 @@
 package com.mrfti.erp;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,11 +10,16 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 import com.mrfti.erp.domain.CategoriaProduto;
+import com.mrfti.erp.domain.Cliente;
+import com.mrfti.erp.domain.Endereco;
 import com.mrfti.erp.domain.Municipio;
 import com.mrfti.erp.domain.Produto;
 import com.mrfti.erp.domain.Uf;
 import com.mrfti.erp.domain.UnidadeMedida;
+import com.mrfti.erp.domain.enums.TipoCliente;
 import com.mrfti.erp.repositories.CategoriaRepository;
+import com.mrfti.erp.repositories.ClienteRepository;
+import com.mrfti.erp.repositories.EnderecoRepository;
 import com.mrfti.erp.repositories.MunicipioRepository;
 import com.mrfti.erp.repositories.ProdutoRepository;
 import com.mrfti.erp.repositories.UfRepository;
@@ -32,6 +38,11 @@ public class MrftiOsApplication implements CommandLineRunner {
 	private UnidadeMedidaRepository unidadeMedidaRepository;
 	@Autowired
 	private ProdutoRepository produtoRepository;
+	@Autowired
+	private ClienteRepository clienteRepository;
+	@Autowired
+	private EnderecoRepository enderecoRepository;
+	
 	
 	public static void main(String[] args) {
 		SpringApplication.run(MrftiOsApplication.class, args);
@@ -88,7 +99,21 @@ public class MrftiOsApplication implements CommandLineRunner {
 		unidadeMedidaRepository.saveAll(Arrays.asList(uni1,uni2,uni3,uni4));
 		produtoRepository.saveAll(Arrays.asList(produ1, produ2, produ3));
 		
+		// criando o CLiente
+		Cliente cl1 = new Cliente(null, "Maria da Silva", "maria@gmail.com", LocalDate.now() , "02343342741", TipoCliente.PESSOAFISICA.getCodigo());
 		
+		cl1.getTelefones().addAll(Arrays.asList("219814.5821", "219741.2129"));
+		
+		// criando registro na tabela endereço
+		Endereco e1 = new Endereco(null, "Av dos Italianos", "1146", "casa 28", "Coelho Neto", "21510-105", cl1, mun1);
+		Endereco e2 = new Endereco(null, "Rua Uranos", "96", null, "Olaria", "21511-145", cl1, mun1);
+				
+		//Relacionando o cliente aos endereços
+		cl1.getEnderecos().addAll(Arrays.asList(e1,e2));
+		
+		//salvando no banco
+		clienteRepository.saveAll(Arrays.asList(cl1));
+		enderecoRepository.saveAll(Arrays.asList(e1,e2));
 		
 	}
 

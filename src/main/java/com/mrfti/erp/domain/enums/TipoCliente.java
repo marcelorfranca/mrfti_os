@@ -1,14 +1,14 @@
 package com.mrfti.erp.domain.enums;
 
-public enum TipoPessoa {
+public enum TipoCliente {
 
-	PESSOAFISICA(0, "PESSOAFISICA"), PESSOAJURIDICA(1, "PESSOAJURIDICA");
+	PESSOAFISICA(1, "PESSOAFISICA"), PESSOAJURIDICA(2, "PESSOAJURIDICA");
 	
 	
 	private Integer codigo;
 	private String descricao;
 	
-	private TipoPessoa(Integer codigo, String descricao) {
+	private TipoCliente(Integer codigo, String descricao) {
 		this.codigo = codigo;
 		this.descricao = descricao;
 	}
@@ -21,12 +21,12 @@ public enum TipoPessoa {
 		return descricao;
 	}
 	
-	public static TipoPessoa toEnum(Integer cod) {
+	public static TipoCliente toEnum(Integer cod) {
 		if(cod == null) {
 			return null;
 		}
 		
-		for (TipoPessoa x  : TipoPessoa.values()) {
+		for (TipoCliente x  : TipoCliente.values()) {
 			if(cod.equals(x.getCodigo())) {
 				return x;
 			}

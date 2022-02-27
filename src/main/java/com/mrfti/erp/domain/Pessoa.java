@@ -2,22 +2,18 @@ package com.mrfti.erp.domain;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
-import java.util.stream.Collectors;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.ElementCollection;
+import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.mrfti.erp.domain.enums.Perfil;
-import com.mrfti.erp.domain.enums.TipoPessoa;
 
 @Entity
 public abstract class Pessoa implements Serializable { 
@@ -28,26 +24,29 @@ public abstract class Pessoa implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Integer id;
 	protected String nome;
+	
+	@Column(unique = true)
 	protected String email;
+	
+	
 	
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	protected LocalDate dataInclusao = LocalDate.now();
 	
-	@ElementCollection(fetch = FetchType.EAGER) // qdo der get no banco a lista de perfis devera vir com o usuario
-	@CollectionTable(name = "PERFIS")// Vai criar uma tabela no bd com os perfis
-	protected Set<Integer> perfis  = new HashSet<>(); // Set impede dois valores iguais 
+	@OneToMany(mappedBy="pessoa")
+	private List<Endereco> enderecos = new ArrayList<>();
+	
+	
 	
 	public Pessoa() {
-		super();
-		addPerfil(Perfil.USER_OS);
 	}
 
-	public Pessoa(Integer id, String cpfOuCnpj, String nome, String email, TipoPessoa tipoPessoa) {
+	public Pessoa(Integer id, String nome, String email, LocalDate dataInclusao) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
-		addPerfil(Perfil.USER_OS);
+		this.dataInclusao = dataInclusao;
 	}
 
 	public Integer getId() {
@@ -57,7 +56,6 @@ public abstract class Pessoa implements Serializable {
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
 
 	public String getNome() {
 		return nome;
@@ -76,16 +74,7 @@ public abstract class Pessoa implements Serializable {
 	}
 
 	
-	public Set<Perfil> getPerfis() { // tipo Perfil altado para Integer. Chamado o metodo la de Perfil
-		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
-	}
 
-	public void addPerfil(Perfil perfil) { // alterado para add e lista
-		this.perfis.add(perfil.getCodigo());
-	}
-	
-	
-	
 	public LocalDate getDataInclusao() {
 		return dataInclusao;
 	}
@@ -93,7 +82,17 @@ public abstract class Pessoa implements Serializable {
 	public void setDataInclusao(LocalDate dataInclusao) {
 		this.dataInclusao = dataInclusao;
 	}
+	
+	
+	public List<Endereco> getEnderecos() {
+		return enderecos;
+	}
 
+	public void setEnderecos(List<Endereco> enderecos) {
+		this.enderecos = enderecos;
+	}
+	
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -110,22 +109,6 @@ public abstract class Pessoa implements Serializable {
 		Pessoa other = (Pessoa) obj;
 		return Objects.equals(id, other.id);
 	}
-
-	
-
-	
-	
-	
-	
-
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 }
