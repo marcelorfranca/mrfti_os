@@ -11,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Uf implements Serializable {
 
@@ -22,6 +24,7 @@ public class Uf implements Serializable {
 	protected String nome;
 	protected String sigla;
 	
+	@JsonIgnore 
 	@OneToMany(mappedBy="uf")//informando qual foi o atributo que mapeou do lado de lá na classe Municipio
 	private List<Municipio> municipios = new ArrayList<>();
 	

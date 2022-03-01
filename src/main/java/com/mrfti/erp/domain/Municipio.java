@@ -10,6 +10,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Entity
 public class Municipio implements Serializable{
@@ -21,8 +23,9 @@ public class Municipio implements Serializable{
 	protected Integer id;
 	protected String nome;
 	
+	@JsonIgnore 
 	@ManyToOne
-	@JoinColumn(name="uf_id")// definir nome da chave estrangeira na tabela municipio
+	@JoinColumn(name="uf_id")// define nome da chave estrangeira na tabela municipio
 	protected Uf uf;
 	
 	public Municipio() {

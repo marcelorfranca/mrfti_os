@@ -14,6 +14,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public abstract class Pessoa implements Serializable { 
@@ -29,10 +30,10 @@ public abstract class Pessoa implements Serializable {
 	protected String email;
 	
 	
-	
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	protected LocalDate dataInclusao = LocalDate.now();
 	
+	@JsonIgnore 
 	@OneToMany(mappedBy="pessoa")
 	private List<Endereco> enderecos = new ArrayList<>();
 	
