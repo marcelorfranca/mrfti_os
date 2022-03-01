@@ -2,7 +2,7 @@ package com.mrfti.erp.domain.enums;
 
 public enum EstadoPagamento {
 
-	PENDENTE(0, "ROLE_PENDENTE"), QUITADO(1, "ROLE_QUITADO"), CANCELADO(2, "ROLE_CANCELADO");
+	PENDENTE(0, "PENDENTE"), QUITADO(1, "QUITADO"), CANCELADO(2, "CANCELADO");
 	
 	private Integer codigo;
 	private String descricao;

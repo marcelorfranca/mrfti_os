@@ -14,6 +14,7 @@ import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mrfti.erp.domain.enums.CategoriaCnh;
 
 @Entity
 public class Habilitacao implements Serializable {
@@ -29,7 +30,7 @@ public class Habilitacao implements Serializable {
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	private LocalDate vencimento;
 	private String foto; // foto da carteira cnh
-	private Integer categoriaCnh;
+	private CategoriaCnh categoriaCnh;
 	
 	@JsonIgnore
 	@OneToMany(mappedBy = "habilitacao") // um cargo para muitos funcionarios
@@ -38,7 +39,7 @@ public class Habilitacao implements Serializable {
 	public Habilitacao() {
 	}
 
-	public Habilitacao(Integer id, String cnh, LocalDate vencimento, String foto, Integer categoriaCnh) {
+	public Habilitacao(Integer id, String cnh, LocalDate vencimento, String foto, CategoriaCnh categoriaCnh) {
 		super();
 		this.id = id;
 		this.cnh = cnh;
@@ -79,11 +80,11 @@ public class Habilitacao implements Serializable {
 		this.foto = foto;
 	}
 
-	public Integer getCategoriaCnh() {
+	public CategoriaCnh getCategoriaCnh() {
 		return categoriaCnh;
 	}
 
-	public void setCategoriaCnh(Integer categoriaCnh) {
+	public void setCategoriaCnh(CategoriaCnh categoriaCnh) {
 		this.categoriaCnh = categoriaCnh;
 	}
 
@@ -97,7 +98,7 @@ public class Habilitacao implements Serializable {
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(cnh, id);
+		return Objects.hash(id);
 	}
 
 	@Override
@@ -109,8 +110,10 @@ public class Habilitacao implements Serializable {
 		if (getClass() != obj.getClass())
 			return false;
 		Habilitacao other = (Habilitacao) obj;
-		return Objects.equals(cnh, other.cnh) && Objects.equals(id, other.id);
+		return Objects.equals(id, other.id);
 	}
+
+
 
 	
 	

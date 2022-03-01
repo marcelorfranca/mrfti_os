@@ -27,7 +27,7 @@ public class Veiculo implements Serializable {
 	private Integer ano;
 	private String renavam;
 	private String chassi;
-	private String kmInicial;
+	private Integer kmInicial;
 	private Character ativo; //S ou N
 	private String observacao;
 	
@@ -42,7 +42,7 @@ public class Veiculo implements Serializable {
 	public Veiculo() {
 	}
 
-	public Veiculo(Integer id, String placa, String cor, Integer ano, String renavam, String chassi, String kmInicial,
+	public Veiculo(Integer id, String placa, String cor, Integer ano, String renavam, String chassi, Integer kmInicial,
 			Character ativo, String observacao, ModeloVeicular modeloVeicular, Funcionario funcionario) {
 		super();
 		this.id = id;
@@ -106,11 +106,11 @@ public class Veiculo implements Serializable {
 		this.chassi = chassi;
 	}
 
-	public String getKmInicial() {
+	public Integer getKmInicial() {
 		return kmInicial;
 	}
 
-	public void setKmInicial(String kmInicial) {
+	public void setKmInicial(Integer kmInicial) {
 		this.kmInicial = kmInicial;
 	}
 

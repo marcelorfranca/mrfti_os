@@ -14,6 +14,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mrfti.erp.domain.enums.TipoCliente;
 
 @Entity
 public class Cliente extends Pessoa{
@@ -22,7 +23,7 @@ public class Cliente extends Pessoa{
 	
 	@Column(unique = true)
 	private String cpfOrCnpj;
-	private Integer tipoCliente;
+	private TipoCliente tipoCliente;
 	
 	
 	@JsonIgnore
@@ -45,7 +46,7 @@ public class Cliente extends Pessoa{
 	
 
 	public Cliente(Integer id, String nome, String email, LocalDate dataInclusao, String cpfOrCnpj,
-			Integer tipoCliente) {
+			TipoCliente tipoCliente) {
 		super(id, nome, email, dataInclusao);
 		this.cpfOrCnpj = cpfOrCnpj;
 		this.tipoCliente = tipoCliente;
@@ -61,11 +62,11 @@ public class Cliente extends Pessoa{
 		this.cpfOrCnpj = cpfOrCnpj;
 	}
 
-	public Integer getTipoCliente() {
+	public TipoCliente getTipoCliente() {
 		return tipoCliente;
 	}
 
-	public void setTipoCliente(Integer tipoCliente) {
+	public void setTipoCliente(TipoCliente tipoCliente) {
 		this.tipoCliente = tipoCliente;
 	}
 
@@ -113,12 +114,6 @@ public class Cliente extends Pessoa{
 		return Objects.equals(cpfOrCnpj, other.cpfOrCnpj);
 	}
 
-	
-	
-
-
-	
-	
 	
 	
 }

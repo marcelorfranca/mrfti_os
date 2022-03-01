@@ -2,11 +2,11 @@ package com.mrfti.erp.domain.enums;
 
 public enum CategoriaCnh {
 
-	A(0, "ROLE_A"),
-	B(1, "ROLE_B"),
-	C(2, "ROLE_C"),
-	AB(3, "ROLE_AB"),
-	E(4, "ROLE_E");
+	A(1, "A"),
+	B(2, "B"),
+	C(3, "C"),
+	AB(4, "AB"),
+	E(5, "E");
 	
 	private Integer codigo;
 	private String descricao;

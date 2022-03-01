@@ -28,8 +28,8 @@ public class Funcionario extends Pessoa{
 
 		
 		protected String matricula;
-		protected char ativo;
-		protected char operacional;
+		protected Character ativo;
+		protected Character operacional;
 		
 		@JsonFormat(pattern = "dd/MM/yyyy")
 		protected LocalDate admissao;
@@ -75,8 +75,8 @@ public class Funcionario extends Pessoa{
 		}
 
 
-		public Funcionario(Integer id, String nome, String email, LocalDate dataInclusao, String matricula, char ativo,
-				char operacional, LocalDate admissao, LocalDate demissao, @CPF String cpf, Setor setor, Cargo cargo,
+		public Funcionario(Integer id, String nome, String email, LocalDate dataInclusao, String matricula, Character ativo,
+				Character operacional, LocalDate admissao, LocalDate demissao, @CPF String cpf, Setor setor, Cargo cargo,
 				Habilitacao habilitacao) {
 			super(id, nome, email, dataInclusao);
 			this.matricula = matricula;
@@ -101,22 +101,22 @@ public class Funcionario extends Pessoa{
 		}
 
 
-		public char getAtivo() {
+		public Character getAtivo() {
 			return ativo;
 		}
 
 
-		public void setAtivo(char ativo) {
+		public void setAtivo(Character ativo) {
 			this.ativo = ativo;
 		}
 
 
-		public char getOperacional() {
+		public Character getOperacional() {
 			return operacional;
 		}
 
 
-		public void setOperacional(char operacional) {
+		public void setOperacional(Character operacional) {
 			this.operacional = operacional;
 		}
 
