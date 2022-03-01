@@ -8,6 +8,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.CollectionTable;
+import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
@@ -18,7 +19,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class Cliente extends Pessoa{
 
 	private static final long serialVersionUID = 1L;
-
+	
+	@Column(unique = true)
 	private String cpfOrCnpj;
 	private Integer tipoCliente;
 	

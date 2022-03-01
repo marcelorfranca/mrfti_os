@@ -1,0 +1,41 @@
+[33mcommit 75d2f55b4c1c8901ed84fe9fd9162ac0823812bc[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m
+Author: Marcelo Ramos <marcelorfranca@hotmail.com>
+Date:   Sun Feb 27 14:54:33 2022 -0300
+
+    7 - Teste instancia de objetos - Cliente, Endereços, Municipios
+
+[33mcommit 40a0087ac33ea52efd2411c4e9c605c4e221f797[m
+Author: Marcelo Ramos <marcelorfranca@hotmail.com>
+Date:   Wed Feb 23 19:12:30 2022 -0300
+
+    6 - Estrutura inicial de Exceptions, resource e servcices de Categoria
+
+[33mcommit 03166396905eef4579d0bc2086759a8116b8e85f[m
+Author: Marcelo Ramos <marcelorfranca@hotmail.com>
+Date:   Wed Feb 23 12:19:28 2022 -0300
+
+    5 - Criado entidades e repositories Produto, UnidadeMedida e CatProduto. Instanciado no Banco.
+
+[33mcommit be250fd4566dd658e8746ac637ffd9095db49e60[m
+Author: Marcelo Ramos <marcelorfranca@hotmail.com>
+Date:   Tue Feb 22 19:40:22 2022 -0300
+
+    4 - Criado codido inserir dados de teste Estados e cidades
+
+[33mcommit 2dfc3e54ba9e04702dbaef5258d8b41b188b676c[m
+Author: Marcelo Ramos <marcelorfranca@hotmail.com>
+Date:   Tue Feb 22 18:56:37 2022 -0300
+
+    3 - Criado UF e Municipios, Associacoes e JPA
+
+[33mcommit 5c274818d325e1484d1fe9af35eb1b8535e2e53a[m
+Author: Marcelo Ramos <marcelorfranca@hotmail.com>
+Date:   Tue Feb 22 09:18:20 2022 -0300
+
+    Criado os Enums e a Classe com JPA
+
+[33mcommit 718509802c665a6e1fd23cec558b67793074e645[m
+Author: marcelorfranca <marcelorfranca@hotmail.com>
+Date:   Fri Feb 18 17:18:11 2022 -0300
+
+    1 - iniciando projeto com enums
