@@ -2,15 +2,15 @@ package com.mrfti.erp.domain;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.JoinColumn;
+import javax.persistence.MapsId;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -33,19 +33,23 @@ public class Habilitacao implements Serializable {
 	private CategoriaCnh categoriaCnh;
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "habilitacao") // um cargo para muitos funcionarios
-	private List<Funcionario> funcionarios = new ArrayList<>();
+	@OneToOne
+	@JoinColumn(name="funcionario_id")
+	@MapsId
+	private Funcionario funcionario;
 	
 	public Habilitacao() {
 	}
 
-	public Habilitacao(Integer id, String cnh, LocalDate vencimento, String foto, CategoriaCnh categoriaCnh) {
+	public Habilitacao(Integer id, String cnh, LocalDate vencimento, String foto, CategoriaCnh categoriaCnh,
+			Funcionario funcionario) {
 		super();
 		this.id = id;
 		this.cnh = cnh;
 		this.vencimento = vencimento;
 		this.foto = foto;
 		this.categoriaCnh = categoriaCnh;
+		this.funcionario = funcionario;
 	}
 
 	public Integer getId() {
@@ -88,12 +92,12 @@ public class Habilitacao implements Serializable {
 		this.categoriaCnh = categoriaCnh;
 	}
 
-	public List<Funcionario> getFuncionarios() {
-		return funcionarios;
+	public Funcionario getFuncionario() {
+		return funcionario;
 	}
 
-	public void setFuncionarios(List<Funcionario> funcionarios) {
-		this.funcionarios = funcionarios;
+	public void setFuncionario(Funcionario funcionario) {
+		this.funcionario = funcionario;
 	}
 
 	@Override
@@ -113,9 +117,6 @@ public class Habilitacao implements Serializable {
 		return Objects.equals(id, other.id);
 	}
 
-
-
-	
 	
 	
 }

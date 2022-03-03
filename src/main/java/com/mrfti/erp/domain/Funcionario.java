@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -62,8 +63,7 @@ public class Funcionario extends Pessoa{
 		@JoinColumn(name = "cargo_id") 
 		private Cargo cargo;
 		
-		@OneToOne // verificar como deve ser relacionado 
-		@JoinColumn(name = "habilitacao_id") 
+		@OneToOne(cascade=CascadeType.ALL, mappedBy="funcionario") 
 		private Habilitacao habilitacao;
 		
 		@JsonIgnore
@@ -74,7 +74,9 @@ public class Funcionario extends Pessoa{
 		public Funcionario() {
 		}
 
-
+		
+		
+		
 		public Funcionario(Integer id, String nome, String email, LocalDate dataInclusao, String matricula, Character ativo,
 				Character operacional, LocalDate admissao, LocalDate demissao, @CPF String cpf, Setor setor, Cargo cargo,
 				Habilitacao habilitacao) {

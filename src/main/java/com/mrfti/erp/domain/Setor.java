@@ -28,6 +28,11 @@ public class Setor implements Serializable {
 	@OneToMany(mappedBy = "setor") // um setor para muitos funcionarios
 	private List<Funcionario> funcionarios = new ArrayList<>();
 	
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "setor") // um setor para muitos funcionarios
+	private List<Orcamento> orcamentos = new ArrayList<>();
+	
 	public Setor() {
 	}
 
@@ -59,6 +64,14 @@ public class Setor implements Serializable {
 
 	public void setFuncionarios(List<Funcionario> funcionarios) {
 		this.funcionarios = funcionarios;
+	}
+	
+	public List<Orcamento> getOrcamentos() {
+		return orcamentos;
+	}
+
+	public void setOrcamentos(List<Orcamento> orcamentos) {
+		this.orcamentos = orcamentos;
 	}
 
 	@Override

@@ -17,12 +17,19 @@ import com.mrfti.erp.domain.Habilitacao;
 import com.mrfti.erp.domain.MarcaVeicular;
 import com.mrfti.erp.domain.ModeloVeicular;
 import com.mrfti.erp.domain.Municipio;
+import com.mrfti.erp.domain.Orcamento;
+import com.mrfti.erp.domain.Pagamento;
+import com.mrfti.erp.domain.PagamentoComBoleto;
+import com.mrfti.erp.domain.PagamentoComCartao;
 import com.mrfti.erp.domain.Produto;
 import com.mrfti.erp.domain.Setor;
 import com.mrfti.erp.domain.Uf;
 import com.mrfti.erp.domain.UnidadeMedida;
+import com.mrfti.erp.domain.Usuario;
 import com.mrfti.erp.domain.Veiculo;
 import com.mrfti.erp.domain.enums.CategoriaCnh;
+import com.mrfti.erp.domain.enums.EstadoPagamento;
+import com.mrfti.erp.domain.enums.Perfil;
 import com.mrfti.erp.domain.enums.TipoCliente;
 import com.mrfti.erp.repositories.CargoRepository;
 import com.mrfti.erp.repositories.CategoriaRepository;
@@ -33,10 +40,13 @@ import com.mrfti.erp.repositories.HabilitacaoRepository;
 import com.mrfti.erp.repositories.MarcaVeicularRepository;
 import com.mrfti.erp.repositories.ModeloVeicularRepository;
 import com.mrfti.erp.repositories.MunicipioRepository;
+import com.mrfti.erp.repositories.OrcamentoRepository;
+import com.mrfti.erp.repositories.PagamentoRepository;
 import com.mrfti.erp.repositories.ProdutoRepository;
 import com.mrfti.erp.repositories.SetorRepository;
 import com.mrfti.erp.repositories.UfRepository;
 import com.mrfti.erp.repositories.UnidadeMedidaRepository;
+import com.mrfti.erp.repositories.UsuarioRepository;
 import com.mrfti.erp.repositories.VeiculoRepository;
 
 @Service
@@ -70,6 +80,12 @@ public class DBService {
 	private CargoRepository cargoRepository;
 	@Autowired
 	private HabilitacaoRepository habilitacaoRepository;
+	@Autowired
+	private UsuarioRepository usuarioRepository;
+	@Autowired
+	private OrcamentoRepository orcamentoRepository;
+	@Autowired
+	private PagamentoRepository pagamentoRepository;
 	
 	
 	public void instanciaDB() {
@@ -124,18 +140,21 @@ public class DBService {
 		
 		// criando o CLiente
 		Cliente cl1 = new Cliente(null, "Maria da Silva", "maria@gmail.com", LocalDate.now() , "02343342741", TipoCliente.PESSOAFISICA);
+		Cliente cl2 = new Cliente(null, "Jurema Santos", "jurema@hotmail.com", LocalDate.of(2022, 2, 10), "623.689.620-85", TipoCliente.PESSOAFISICA);
 		
 		cl1.getTelefones().addAll(Arrays.asList("219814.5821", "219741.2129"));
+		cl2.getTelefones().addAll(Arrays.asList("221541.1831", "219888.2333"));
 		
 		// criando registro na tabela endereço
 		Endereco e1 = new Endereco(null, "Av dos Italianos", "1146", "casa 28", "Coelho Neto", "21510-105", cl1, mun1);
 		Endereco e2 = new Endereco(null, "Rua Uranos", "96", null, "Olaria", "21511-145", cl1, mun1);
 				
 		//Relacionando o cliente aos endereços
-		cl1.getEnderecos().addAll(Arrays.asList(e1,e2));
+		cl1.getEnderecos().addAll(Arrays.asList(e2));
+		cl2.getEnderecos().addAll(Arrays.asList(e1));		
 		
 		//salvando no banco
-		clienteRepository.saveAll(Arrays.asList(cl1));
+		clienteRepository.saveAll(Arrays.asList(cl1,cl2));
 		enderecoRepository.saveAll(Arrays.asList(e1,e2));
 	
 		
@@ -162,21 +181,46 @@ public class DBService {
 		Cargo ca1 = new Cargo(null, "Analista de Suporte");
 		Cargo ca2 = new Cargo(null, "Programador");
 		
-		//Habilitacao hab1 = new Habilitacao(null, "ETC215214", LocalDate.of(2025, 8, 25), null, CategoriaCnh.A);
-		//Habilitacao hab2 = new Habilitacao(null, "SAA2111", LocalDate.of(2026, 3, 16), null, CategoriaCnh.E);
-		Habilitacao hab1 = new Habilitacao(null, "ATC62369D", LocalDate.of(2024, 9, 28), null, CategoriaCnh.C);
+		Funcionario func1 = new Funcionario(null, "Vagner Moura", "vagner@gmail.com", LocalDate.of(2022, 04, 14), "1266" , 'S', 'S', LocalDate.of(2022, 03, 01), null, "02343342741", set1, ca1, null);
+		Funcionario func2 = new Funcionario(null, "João da Silva", "joao@gmail.com", LocalDate.of(2022, 03, 29), "1265" , 'S', 'S', LocalDate.of(2022, 03, 01), null, "71677752076", set1, ca1, null);
+		
+		
+		//Habilitacao hab1 = new Habilitacao(null, "ATC62369D", LocalDate.of(2024, 9, 28), null, CategoriaCnh.E, null);
+		//Habilitacao hab2 = new Habilitacao(null, "ETC254121", LocalDate.of(2025, 5, 22), null, CategoriaCnh.AB, func2);
 		
 		
 		setorRepository.saveAll(Arrays.asList(set1,set2));
 		cargoRepository.saveAll(Arrays.asList(ca1,ca2));
-		habilitacaoRepository.saveAll(Arrays.asList(hab1, hab1));
+		//habilitacaoRepository.saveAll(Arrays.asList(hab1, hab1));
+		
+		funcionarioRepository.saveAll(Arrays.asList(func1,func2));
+		
+		Usuario user1 = new Usuario(null, "Jorge Boca", "jorge@gmail.com", LocalDate.of(2021, 12, 20), "123", Perfil.CLIENTE);
+		
+		usuarioRepository.saveAll(Arrays.asList(user1));
+		
+		
+		Orcamento orc1 = new Orcamento(null, 1, LocalDate.of(2022, 2, 15), 'S', 15,"Teste de inserção Orçamento", "Sr José", "Agradecemos a pref.", e2, set2 , func2, cl1, user1);
+		Orcamento orc2 = new Orcamento(null, 2, LocalDate.of(2022, 3, 19), 'S', 10, "Orçamento dois", "Juca", "Obrigado pela pref.", e1, set1, func1, cl2, user1);
+		
+		
+		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, orc1, 6);
+		orc1.setPagamento(pagto1);
+		
+		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, orc2, LocalDate.of(2022, 3, 18) , null);
+		orc2.setPagamento(pagto2);
+		
+		//associar o cliente ao orçamento
+		cl1.getOrcamentos().addAll(Arrays.asList(orc1));
+		cl2.getOrcamentos().addAll(Arrays.asList(orc2));
 		
 		
 		
-		//Funcionario func1 = new Funcionario(null, "João da Silva", "joao@gmail.com", "01/03/2022", "1265", 'S', 'S', "15/03/2022", null, "02343342741", null, null, null);
-		Funcionario func2 = new Funcionario(null, "João da Silva", "joao@gmail.com", LocalDate.of(2022, 03, 29), "1265" , 'S', 'S', LocalDate.of(2022, 03, 01), null, "02343342741", set1, ca1, hab1);
 		
-		funcionarioRepository.saveAll(Arrays.asList(func2));
+		orcamentoRepository.saveAll(Arrays.asList(orc1,orc2));
+		pagamentoRepository.saveAll(Arrays.asList(pagto1,pagto2));
+		
+		
 		
 	}
 }

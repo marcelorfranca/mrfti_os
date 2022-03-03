@@ -1,5 +1,6 @@
 package com.mrfti.erp.domain;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -42,16 +43,20 @@ public class Usuario extends Pessoa {
 		addPerfil(Perfil.CLIENTE);
 	}
 	
-	public Usuario(String senha, String nome ,Perfil perfil) {
-		super();
+	
+
+	public Usuario(Integer id, String nome, String email, LocalDate dataInclusao, String senha, Perfil perfil) {
+		super(id, nome, email, dataInclusao);
 		this.senha = senha;
-		this.nome = nome; 
 		addPerfil(Perfil.CLIENTE);
 	}
-
+	
+	
 	public String getSenha() {
 		return senha;
 	}
+
+	
 
 	public void setSenha(String senha) {
 		this.senha = senha;
