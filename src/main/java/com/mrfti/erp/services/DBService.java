@@ -1,7 +1,6 @@
 package com.mrfti.erp.services;
 
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.Arrays;
 
@@ -13,7 +12,7 @@ import com.mrfti.erp.domain.CategoriaProduto;
 import com.mrfti.erp.domain.Cliente;
 import com.mrfti.erp.domain.Endereco;
 import com.mrfti.erp.domain.Funcionario;
-import com.mrfti.erp.domain.Habilitacao;
+import com.mrfti.erp.domain.ItemOrcamento;
 import com.mrfti.erp.domain.MarcaVeicular;
 import com.mrfti.erp.domain.ModeloVeicular;
 import com.mrfti.erp.domain.Municipio;
@@ -27,7 +26,6 @@ import com.mrfti.erp.domain.Uf;
 import com.mrfti.erp.domain.UnidadeMedida;
 import com.mrfti.erp.domain.Usuario;
 import com.mrfti.erp.domain.Veiculo;
-import com.mrfti.erp.domain.enums.CategoriaCnh;
 import com.mrfti.erp.domain.enums.EstadoPagamento;
 import com.mrfti.erp.domain.enums.Perfil;
 import com.mrfti.erp.domain.enums.TipoCliente;
@@ -36,7 +34,7 @@ import com.mrfti.erp.repositories.CategoriaRepository;
 import com.mrfti.erp.repositories.ClienteRepository;
 import com.mrfti.erp.repositories.EnderecoRepository;
 import com.mrfti.erp.repositories.FuncionarioRepository;
-import com.mrfti.erp.repositories.HabilitacaoRepository;
+import com.mrfti.erp.repositories.ItemOrcamentoRepository;
 import com.mrfti.erp.repositories.MarcaVeicularRepository;
 import com.mrfti.erp.repositories.ModeloVeicularRepository;
 import com.mrfti.erp.repositories.MunicipioRepository;
@@ -79,14 +77,13 @@ public class DBService {
 	@Autowired
 	private CargoRepository cargoRepository;
 	@Autowired
-	private HabilitacaoRepository habilitacaoRepository;
-	@Autowired
 	private UsuarioRepository usuarioRepository;
 	@Autowired
 	private OrcamentoRepository orcamentoRepository;
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
-	
+	@Autowired
+	private ItemOrcamentoRepository itemOrcamentoRepository;
 	
 	public void instanciaDB() {
 		
@@ -181,12 +178,8 @@ public class DBService {
 		Cargo ca1 = new Cargo(null, "Analista de Suporte");
 		Cargo ca2 = new Cargo(null, "Programador");
 		
-		Funcionario func1 = new Funcionario(null, "Vagner Moura", "vagner@gmail.com", LocalDate.of(2022, 04, 14), "1266" , 'S', 'S', LocalDate.of(2022, 03, 01), null, "02343342741", set1, ca1, null);
-		Funcionario func2 = new Funcionario(null, "João da Silva", "joao@gmail.com", LocalDate.of(2022, 03, 29), "1265" , 'S', 'S', LocalDate.of(2022, 03, 01), null, "71677752076", set1, ca1, null);
-		
-		
-		//Habilitacao hab1 = new Habilitacao(null, "ATC62369D", LocalDate.of(2024, 9, 28), null, CategoriaCnh.E, null);
-		//Habilitacao hab2 = new Habilitacao(null, "ETC254121", LocalDate.of(2025, 5, 22), null, CategoriaCnh.AB, func2);
+		Funcionario func1 = new Funcionario(null, "Vagner Moura", "vagner@gmail.com", LocalDate.of(2022, 04, 14), "1266" , 'S', 'S', LocalDate.of(2022, 03, 01), null, "02343342741", "541258922" , null ,set1, ca1);
+		Funcionario func2 = new Funcionario(null, "João da Silva", "joao@gmail.com", LocalDate.of(2022, 03, 29), "1265" , 'S', 'S', LocalDate.of(2022, 03, 01), null, "71677752076", "3265222666" , null ,set1, ca1);
 		
 		
 		setorRepository.saveAll(Arrays.asList(set1,set2));
@@ -214,12 +207,22 @@ public class DBService {
 		cl1.getOrcamentos().addAll(Arrays.asList(orc1));
 		cl2.getOrcamentos().addAll(Arrays.asList(orc2));
 		
-		
-		
-		
 		orcamentoRepository.saveAll(Arrays.asList(orc1,orc2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1,pagto2));
 		
+		ItemOrcamento iorc1 = new ItemOrcamento(orc1, produ1, 10, new BigDecimal(134.50) , 3, 1);
+		ItemOrcamento iorc2 = new ItemOrcamento(orc2, produ3, 15, new BigDecimal(41.00), 1, 2);
+		ItemOrcamento iorc3 = new ItemOrcamento(orc1, produ2, 15, new BigDecimal(15.31), 5, 1);
+		
+		//Associar os itens ao orcamento
+		orc1.getItens().addAll(Arrays.asList(iorc1,iorc3));
+		orc2.getItens().addAll(Arrays.asList(iorc2));
+		
+		produ1.getItens().addAll(Arrays.asList(iorc1));
+		produ3.getItens().addAll(Arrays.asList(iorc2));
+		produ2.getItens().addAll(Arrays.asList(iorc3));
+		
+		itemOrcamentoRepository.saveAll(Arrays.asList(iorc1,iorc2, iorc3));
 		
 		
 	}

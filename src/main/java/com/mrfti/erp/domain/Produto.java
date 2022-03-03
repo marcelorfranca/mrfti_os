@@ -3,7 +3,11 @@ package com.mrfti.erp.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Produto implements Serializable {
@@ -23,6 +28,14 @@ public class Produto implements Serializable {
 	protected String descricao;
 	protected BigDecimal preco;
 	
+	public List<Orcamento> getOrcamentos() {
+		List<Orcamento> lista = new ArrayList<>();
+		for (ItemOrcamento x : itens) {
+			lista.add(x.getOrcamento());
+		}
+		return lista;
+	}
+	
 	@ManyToOne
 	@JoinColumn(name="categoriaProduto_id")
 	protected CategoriaProduto categoriaProduto;
@@ -30,6 +43,9 @@ public class Produto implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="unidadeMedida_id")
 	protected UnidadeMedida unidadeMedida;
+	
+	@OneToMany(mappedBy="id.produto")
+	private Set<ItemOrcamento> itens = new HashSet<>();
 	
 	public Produto() {
 	}
@@ -84,6 +100,16 @@ public class Produto implements Serializable {
 		this.unidadeMedida = unidadeMedida;
 	}
 
+	public Set<ItemOrcamento> getItens() {
+		return itens;
+	}
+
+	public void setItens(Set<ItemOrcamento> itens) {
+		this.itens = itens;
+	}
+	
+	
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -100,6 +126,8 @@ public class Produto implements Serializable {
 		Produto other = (Produto) obj;
 		return Objects.equals(id, other.id);
 	}
+
+	
 	
 	
 	

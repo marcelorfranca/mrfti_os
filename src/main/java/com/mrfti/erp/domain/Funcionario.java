@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -15,7 +14,6 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import org.hibernate.validator.constraints.br.CPF;
 
@@ -42,6 +40,12 @@ public class Funcionario extends Pessoa{
 		@Column(unique = true)
 		protected String cpf;
 		
+		@Column(unique = true)
+		private String cnh;
+		
+		private String fotoCnh;
+		
+		
 		@JsonIgnore
 		@OneToMany(mappedBy = "funcionario") // um funcionaio para muitas OSs
 		private List<Os> os = new ArrayList<>();
@@ -63,8 +67,6 @@ public class Funcionario extends Pessoa{
 		@JoinColumn(name = "cargo_id") 
 		private Cargo cargo;
 		
-		@OneToOne(cascade=CascadeType.ALL, mappedBy="funcionario") 
-		private Habilitacao habilitacao;
 		
 		@JsonIgnore
 		@OneToMany(mappedBy = "funcionario") // um funcionario para varios veiculos
@@ -78,8 +80,7 @@ public class Funcionario extends Pessoa{
 		
 		
 		public Funcionario(Integer id, String nome, String email, LocalDate dataInclusao, String matricula, Character ativo,
-				Character operacional, LocalDate admissao, LocalDate demissao, @CPF String cpf, Setor setor, Cargo cargo,
-				Habilitacao habilitacao) {
+				Character operacional, LocalDate admissao, LocalDate demissao, @CPF String cpf, String cnh , String fotoCnh , Setor setor, Cargo cargo) {
 			super(id, nome, email, dataInclusao);
 			this.matricula = matricula;
 			this.ativo = ativo;
@@ -89,15 +90,13 @@ public class Funcionario extends Pessoa{
 			this.cpf = cpf;
 			this.setor = setor;
 			this.cargo = cargo;
-			this.habilitacao = habilitacao;
+			this.cnh = cnh;
+			this.fotoCnh = fotoCnh;
 		}
-
 
 		public String getMatricula() {
 			return matricula;
 		}
-
-
 		public void setMatricula(String matricula) {
 			this.matricula = matricula;
 		}
@@ -106,8 +105,6 @@ public class Funcionario extends Pessoa{
 		public Character getAtivo() {
 			return ativo;
 		}
-
-
 		public void setAtivo(Character ativo) {
 			this.ativo = ativo;
 		}
@@ -116,8 +113,6 @@ public class Funcionario extends Pessoa{
 		public Character getOperacional() {
 			return operacional;
 		}
-
-
 		public void setOperacional(Character operacional) {
 			this.operacional = operacional;
 		}
@@ -126,8 +121,6 @@ public class Funcionario extends Pessoa{
 		public LocalDate getAdmissao() {
 			return admissao;
 		}
-
-
 		public void setAdmissao(LocalDate admissao) {
 			this.admissao = admissao;
 		}
@@ -136,8 +129,6 @@ public class Funcionario extends Pessoa{
 		public LocalDate getDemissao() {
 			return demissao;
 		}
-
-
 		public void setDemissao(LocalDate demissao) {
 			this.demissao = demissao;
 		}
@@ -146,8 +137,6 @@ public class Funcionario extends Pessoa{
 		public String getCpf() {
 			return cpf;
 		}
-
-
 		public void setCpf(String cpf) {
 			this.cpf = cpf;
 		}
@@ -156,8 +145,6 @@ public class Funcionario extends Pessoa{
 		public List<Os> getOs() {
 			return os;
 		}
-
-
 		public void setOs(List<Os> os) {
 			this.os = os;
 		}
@@ -166,8 +153,6 @@ public class Funcionario extends Pessoa{
 		public List<Orcamento> getOrcamentos() {
 			return orcamentos;
 		}
-
-
 		public void setOrcamentos(List<Orcamento> orcamentos) {
 			this.orcamentos = orcamentos;
 		}
@@ -176,8 +161,6 @@ public class Funcionario extends Pessoa{
 		public Set<String> getTelefones() {
 			return telefones;
 		}
-
-
 		public void setTelefones(Set<String> telefones) {
 			this.telefones = telefones;
 		}
@@ -186,40 +169,38 @@ public class Funcionario extends Pessoa{
 		public Setor getSetor() {
 			return setor;
 		}
-
-
 		public void setSetor(Setor setor) {
 			this.setor = setor;
 		}
 
-
 		public Cargo getCargo() {
 			return cargo;
 		}
-
-
 		public void setCargo(Cargo cargo) {
 			this.cargo = cargo;
 		}
 
-
-		public Habilitacao getHabilitacao() {
-			return habilitacao;
-		}
-
-
-		public void setHabilitacao(Habilitacao habilitacao) {
-			this.habilitacao = habilitacao;
-		}
-
-
 		public List<Veiculo> getVeiculos() {
 			return veiculos;
 		}
-
-
 		public void setVeiculos(List<Veiculo> veiculos) {
 			this.veiculos = veiculos;
+		}
+		
+		
+		public String getCnh() {
+			return cnh;
+		}
+		public void setCnh(String cnh) {
+			this.cnh = cnh;
+		}
+
+
+		public String getFotoCnh() {
+			return fotoCnh;
+		}
+		public void setFotoCnh(String fotoCnh) {
+			this.fotoCnh = fotoCnh;
 		}
 
 

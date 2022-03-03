@@ -2,7 +2,9 @@ package com.mrfti.erp.domain;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -12,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -61,8 +64,8 @@ public class Orcamento implements Serializable{
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 	
-	
-	
+	@OneToMany(mappedBy="id.orcamento")
+	private Set<ItemOrcamento> itens = new HashSet<>();
 	
 	public Orcamento() {
 	}
@@ -198,6 +201,15 @@ public class Orcamento implements Serializable{
 		this.usuario = usuario;
 	}
 
+	public Set<ItemOrcamento> getItens() {
+		return itens;
+	}
+
+	public void setItens(Set<ItemOrcamento> itens) {
+		this.itens = itens;
+	}
+	
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -214,6 +226,8 @@ public class Orcamento implements Serializable{
 		Orcamento other = (Orcamento) obj;
 		return Objects.equals(id, other.id);
 	}
+
+	
 	
 	
 	
