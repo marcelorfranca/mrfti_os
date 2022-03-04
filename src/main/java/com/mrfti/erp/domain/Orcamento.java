@@ -67,6 +67,9 @@ public class Orcamento implements Serializable{
 	@OneToMany(mappedBy="id.orcamento")
 	private Set<ItemOrcamento> itens = new HashSet<>();
 	
+	@OneToMany(mappedBy="id.orcamento")
+	private Set<ServicoOrcamento> servicos = new HashSet<>();
+	
 	public Orcamento() {
 	}
 
@@ -207,6 +210,15 @@ public class Orcamento implements Serializable{
 
 	public void setItens(Set<ItemOrcamento> itens) {
 		this.itens = itens;
+	}
+	
+	
+	public Set<ServicoOrcamento> getServicos() {
+		return servicos;
+	}
+
+	public void setServicos(Set<ServicoOrcamento> servicos) {
+		this.servicos = servicos;
 	}
 	
 	

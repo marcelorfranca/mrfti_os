@@ -17,10 +17,14 @@ import com.mrfti.erp.domain.MarcaVeicular;
 import com.mrfti.erp.domain.ModeloVeicular;
 import com.mrfti.erp.domain.Municipio;
 import com.mrfti.erp.domain.Orcamento;
+import com.mrfti.erp.domain.Os;
 import com.mrfti.erp.domain.Pagamento;
 import com.mrfti.erp.domain.PagamentoComBoleto;
 import com.mrfti.erp.domain.PagamentoComCartao;
 import com.mrfti.erp.domain.Produto;
+import com.mrfti.erp.domain.Servico;
+import com.mrfti.erp.domain.ServicoOrcamento;
+import com.mrfti.erp.domain.ServicoOs;
 import com.mrfti.erp.domain.Setor;
 import com.mrfti.erp.domain.Uf;
 import com.mrfti.erp.domain.UnidadeMedida;
@@ -28,7 +32,10 @@ import com.mrfti.erp.domain.Usuario;
 import com.mrfti.erp.domain.Veiculo;
 import com.mrfti.erp.domain.enums.EstadoPagamento;
 import com.mrfti.erp.domain.enums.Perfil;
+import com.mrfti.erp.domain.enums.ResultadoOs;
+import com.mrfti.erp.domain.enums.StatusOs;
 import com.mrfti.erp.domain.enums.TipoCliente;
+import com.mrfti.erp.domain.enums.Turno;
 import com.mrfti.erp.repositories.CargoRepository;
 import com.mrfti.erp.repositories.CategoriaRepository;
 import com.mrfti.erp.repositories.ClienteRepository;
@@ -39,8 +46,12 @@ import com.mrfti.erp.repositories.MarcaVeicularRepository;
 import com.mrfti.erp.repositories.ModeloVeicularRepository;
 import com.mrfti.erp.repositories.MunicipioRepository;
 import com.mrfti.erp.repositories.OrcamentoRepository;
+import com.mrfti.erp.repositories.OsRepository;
 import com.mrfti.erp.repositories.PagamentoRepository;
 import com.mrfti.erp.repositories.ProdutoRepository;
+import com.mrfti.erp.repositories.ServicoOrcamentoRepository;
+import com.mrfti.erp.repositories.ServicoOsRepository;
+import com.mrfti.erp.repositories.ServicoRepository;
 import com.mrfti.erp.repositories.SetorRepository;
 import com.mrfti.erp.repositories.UfRepository;
 import com.mrfti.erp.repositories.UnidadeMedidaRepository;
@@ -84,6 +95,14 @@ public class DBService {
 	private PagamentoRepository pagamentoRepository;
 	@Autowired
 	private ItemOrcamentoRepository itemOrcamentoRepository;
+	@Autowired
+	private ServicoOrcamentoRepository servicoOrcamentoRepository;
+	@Autowired
+	private ServicoRepository servicoRepository;
+	@Autowired
+	private ServicoOsRepository servicoOsRepository;
+	@Autowired
+	private OsRepository osRepository;
 	
 	public void instanciaDB() {
 		
@@ -128,8 +147,8 @@ public class DBService {
 		uni1.getProdutos().addAll(Arrays.asList(produ1));
 		uni2.getProdutos().addAll(Arrays.asList(produ3));
 		uni4.getProdutos().addAll(Arrays.asList(produ2));
-				
 		
+				
 		//salvar no banco
 		categoriaRepository.saveAll(Arrays.asList(cat1,cat2,cat3));
 		unidadeMedidaRepository.saveAll(Arrays.asList(uni1,uni2,uni3,uni4));
@@ -214,6 +233,15 @@ public class DBService {
 		ItemOrcamento iorc2 = new ItemOrcamento(orc2, produ3, 15, new BigDecimal(41.00), 1, 2);
 		ItemOrcamento iorc3 = new ItemOrcamento(orc1, produ2, 15, new BigDecimal(15.31), 5, 1);
 		
+		
+		Servico serv1 = new Servico(null,"Conversao de fogão", new BigDecimal(340.00));
+		ServicoOrcamento serOrc1 = new ServicoOrcamento(orc1, serv1, 5, new BigDecimal(240.00), 1, 1);
+
+		servicoRepository.saveAll(Arrays.asList(serv1));
+		servicoOrcamentoRepository.saveAll(Arrays.asList(serOrc1));
+		
+		
+		
 		//Associar os itens ao orcamento
 		orc1.getItens().addAll(Arrays.asList(iorc1,iorc3));
 		orc2.getItens().addAll(Arrays.asList(iorc2));
@@ -224,6 +252,16 @@ public class DBService {
 		
 		itemOrcamentoRepository.saveAll(Arrays.asList(iorc1,iorc2, iorc3));
 		
+		
+		Os os1 = new Os(null, 1, LocalDate.of(2022, 3, 12), LocalDate.of(2022, 3, 8), LocalDate.of(2022, 3, 8), "Minha primeira OS no H2", 
+													ResultadoOs.REALIZADO, Turno.TARDE, StatusOs.ABERTO, func2, cl2, user1, e2, set2);
+		//associar o cliente a OS
+		cl1.getOs().addAll(Arrays.asList(os1));
+		
+		osRepository.saveAll(Arrays.asList(os1));
+		
+		ServicoOs ServOs1 = new ServicoOs(os1, serv1, 5, new BigDecimal(340.00), 1 , 1);
+		servicoOsRepository.saveAll(Arrays.asList(ServOs1));
 		
 	}
 }
