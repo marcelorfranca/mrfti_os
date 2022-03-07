@@ -41,8 +41,10 @@ public class Orcamento implements Serializable{
 	private String contato;
 	private String observacaoRecibo;
 	
+	
 	@OneToOne(cascade=CascadeType.ALL, mappedBy="orcamento")
 	private Pagamento pagamento;
+	
 	
 	@ManyToOne
 	@JoinColumn(name="endereco_orcamento_id")
@@ -56,6 +58,7 @@ public class Orcamento implements Serializable{
 	@JoinColumn(name = "funcionario_id") // relacionando as classes
 	private Funcionario funcionario;
 	
+	
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
@@ -63,6 +66,8 @@ public class Orcamento implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
+	
+	
 	
 	@OneToMany(mappedBy="id.orcamento")
 	private Set<ItemOrcamento> itens = new HashSet<>();
@@ -156,6 +161,7 @@ public class Orcamento implements Serializable{
 		this.observacaoRecibo = observacaoRecibo;
 	}
 
+	
 	public Pagamento getPagamento() {
 		return pagamento;
 	}
@@ -164,6 +170,7 @@ public class Orcamento implements Serializable{
 		this.pagamento = pagamento;
 	}
 
+	
 	public Endereco getEnderecoOrcamento() {
 		return enderecoOrcamento;
 	}
@@ -171,7 +178,8 @@ public class Orcamento implements Serializable{
 	public void setEnderecoOrcamento(Endereco enderecoOrcamento) {
 		this.enderecoOrcamento = enderecoOrcamento;
 	}
-
+	
+	
 	public Setor getSetor() {
 		return setor;
 	}
@@ -180,6 +188,7 @@ public class Orcamento implements Serializable{
 		this.setor = setor;
 	}
 
+	
 	public Funcionario getFuncionario() {
 		return funcionario;
 	}
@@ -188,6 +197,7 @@ public class Orcamento implements Serializable{
 		this.funcionario = funcionario;
 	}
 
+	
 	public Cliente getCliente() {
 		return cliente;
 	}
@@ -196,6 +206,7 @@ public class Orcamento implements Serializable{
 		this.cliente = cliente;
 	}
 
+	
 	public Usuario getUsuario() {
 		return usuario;
 	}
@@ -204,6 +215,7 @@ public class Orcamento implements Serializable{
 		this.usuario = usuario;
 	}
 
+	
 	public Set<ItemOrcamento> getItens() {
 		return itens;
 	}

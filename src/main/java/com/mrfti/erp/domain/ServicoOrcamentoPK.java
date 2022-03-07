@@ -11,16 +11,17 @@ import javax.persistence.ManyToOne;
 public class ServicoOrcamentoPK implements Serializable { // classe chave comporta da classe orcamento e serviço 
 	private static final long serialVersionUID = 1L;
 	
-	
 	@ManyToOne
 	@JoinColumn(name="orcamento_id")
 	private Orcamento orcamento;
+	
 	
 	@ManyToOne
 	@JoinColumn(name="servico_id")
 	private Servico servico;
 	
 	// nesta classe não usamos construtores
+	
 	
 	public Orcamento getOrcamento() {
 		return orcamento;

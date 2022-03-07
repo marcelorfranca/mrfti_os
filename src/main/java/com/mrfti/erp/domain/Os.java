@@ -16,6 +16,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mrfti.erp.domain.enums.ResultadoOs;
 import com.mrfti.erp.domain.enums.StatusOs;
 import com.mrfti.erp.domain.enums.Turno;
@@ -49,6 +50,7 @@ public class Os implements Serializable{
 	@JoinColumn(name = "funcionario_id") // relacionando as classes
 	private Funcionario funcionario;
 	
+	
 	@ManyToOne
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
@@ -60,12 +62,18 @@ public class Os implements Serializable{
 	
 	@ManyToOne
 	@JoinColumn(name="endereco_os_id")
-	private Endereco enderecoOrcamento;
+	private Endereco enderecoOs;
 	
 	
 	@ManyToOne
 	@JoinColumn(name = "setor_id") // relacionando as classes
 	private Setor setor;
+	
+	
+	@ManyToOne
+	@JoinColumn(name = "zona_id") 
+	private Zona zona;
+	
 	
 	@OneToMany(mappedBy="id.os")
 	private Set<ServicoOs> servicos = new HashSet<>();
@@ -74,10 +82,9 @@ public class Os implements Serializable{
 	public Os() {
 	}
 
-
-	public Os(Integer id,Integer numOs,LocalDate dataAbertura, LocalDate dataAgendamento, LocalDate dataSolicitacao,
+	public Os(Integer id, Integer numOs, LocalDate dataAbertura, LocalDate dataAgendamento, LocalDate dataSolicitacao,
 			String observacao, ResultadoOs resultado, Turno turnoAgendado, StatusOs status, Funcionario funcionario,
-			Cliente cliente, Usuario usuario, Endereco enderecoOrcamento, Setor setor) {
+			Cliente cliente, Usuario usuario, Endereco enderecoOs, Setor setor, Zona zona) {
 		super();
 		this.id = id;
 		this.numOs = numOs;
@@ -91,8 +98,9 @@ public class Os implements Serializable{
 		this.funcionario = funcionario;
 		this.cliente = cliente;
 		this.usuario = usuario;
-		this.enderecoOrcamento = enderecoOrcamento;
+		this.enderecoOs = enderecoOs;
 		this.setor = setor;
+		this.zona = zona;
 	}
 
 
@@ -160,6 +168,7 @@ public class Os implements Serializable{
 		this.status = status;
 	}
 
+	
 	public Funcionario getFuncionario() {
 		return funcionario;
 	}
@@ -168,6 +177,7 @@ public class Os implements Serializable{
 		this.funcionario = funcionario;
 	}
 
+	
 	public Cliente getCliente() {
 		return cliente;
 	}
@@ -176,6 +186,7 @@ public class Os implements Serializable{
 		this.cliente = cliente;
 	}
 
+	
 	public Usuario getUsuario() {
 		return usuario;
 	}
@@ -184,14 +195,16 @@ public class Os implements Serializable{
 		this.usuario = usuario;
 	}
 
-	public Endereco getEnderecoOrcamento() {
-		return enderecoOrcamento;
+	
+	public Endereco getEnderecoOs() {
+		return enderecoOs;
 	}
 
-	public void setEnderecoOrcamento(Endereco enderecoOrcamento) {
-		this.enderecoOrcamento = enderecoOrcamento;
+	public void setEnderecoOs(Endereco enderecoOs) {
+		this.enderecoOs = enderecoOs;
 	}
 
+	
 	public Setor getSetor() {
 		return setor;
 	}
@@ -200,6 +213,7 @@ public class Os implements Serializable{
 		this.setor = setor;
 	}
 
+	
 	public Set<ServicoOs> getServicos() {
 		return servicos;
 	}
@@ -208,10 +222,7 @@ public class Os implements Serializable{
 		this.servicos = servicos;
 	}
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
+	
 	
 	public Integer getNumOs() {
 		return numOs;
@@ -221,7 +232,21 @@ public class Os implements Serializable{
 	public void setNumOs(Integer numOs) {
 		this.numOs = numOs;
 	}
+	
+	
+	public Zona getZona() {
+		return zona;
+	}
 
+
+	public void setZona(Zona zona) {
+		this.zona = zona;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(id);
+	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -235,8 +260,6 @@ public class Os implements Serializable{
 		return Objects.equals(id, other.id);
 	}
 
-	
-	
 	
 	
 	

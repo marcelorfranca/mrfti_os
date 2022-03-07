@@ -7,10 +7,13 @@ import java.util.Objects;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class ServicoOs implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@JsonIgnore
 	@EmbeddedId
 	private ServicoOsPK id = new ServicoOsPK();
 	
@@ -22,8 +25,7 @@ public class ServicoOs implements Serializable {
 	public ServicoOs() {
 	}
 
-	public ServicoOs(Os os, Servico servico, Integer desconto, BigDecimal preco, Integer quantidade,
-			Integer numOs) {
+	public ServicoOs(Os os ,Servico servico, Integer desconto, BigDecimal preco, Integer quantidade, Integer numOs) {
 		super();
 		id.setOs(os);
 		id.setServico(servico);
@@ -33,12 +35,14 @@ public class ServicoOs implements Serializable {
 		this.numOs = numOs;
 	}
 
+	@JsonIgnore
 	public Os getOs() {
 		return id.getOs();
 	}
 	
-	public Servico getServico() {
-		return id.getServico();
+	
+	public String getServico() {
+		return id.getServico().getDescricao();
 	}
 	
 	
@@ -98,10 +102,6 @@ public class ServicoOs implements Serializable {
 		ServicoOs other = (ServicoOs) obj;
 		return Objects.equals(id, other.id);
 	}
-
-	
-
-	
 
 	
 	

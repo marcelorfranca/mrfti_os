@@ -30,9 +30,9 @@ import com.mrfti.erp.domain.Uf;
 import com.mrfti.erp.domain.UnidadeMedida;
 import com.mrfti.erp.domain.Usuario;
 import com.mrfti.erp.domain.Veiculo;
+import com.mrfti.erp.domain.Zona;
 import com.mrfti.erp.domain.enums.EstadoPagamento;
 import com.mrfti.erp.domain.enums.Perfil;
-import com.mrfti.erp.domain.enums.ResultadoOs;
 import com.mrfti.erp.domain.enums.StatusOs;
 import com.mrfti.erp.domain.enums.TipoCliente;
 import com.mrfti.erp.domain.enums.Turno;
@@ -57,6 +57,7 @@ import com.mrfti.erp.repositories.UfRepository;
 import com.mrfti.erp.repositories.UnidadeMedidaRepository;
 import com.mrfti.erp.repositories.UsuarioRepository;
 import com.mrfti.erp.repositories.VeiculoRepository;
+import com.mrfti.erp.repositories.ZonaRepository;
 
 @Service
 public class DBService {
@@ -103,6 +104,8 @@ public class DBService {
 	private ServicoOsRepository servicoOsRepository;
 	@Autowired
 	private OsRepository osRepository;
+	@Autowired
+	private ZonaRepository zonaRepository;
 	
 	public void instanciaDB() {
 		
@@ -197,13 +200,17 @@ public class DBService {
 		Cargo ca1 = new Cargo(null, "Analista de Suporte");
 		Cargo ca2 = new Cargo(null, "Programador");
 		
+		Zona zo1 = new Zona(null, "Zona Oeste");
+		Zona zo2 = new Zona(null, "Zona Sul");
+		
+		
 		Funcionario func1 = new Funcionario(null, "Vagner Moura", "vagner@gmail.com", LocalDate.of(2022, 04, 14), "1266" , 'S', 'S', LocalDate.of(2022, 03, 01), null, "02343342741", "541258922" , null ,set1, ca1);
 		Funcionario func2 = new Funcionario(null, "João da Silva", "joao@gmail.com", LocalDate.of(2022, 03, 29), "1265" , 'S', 'S', LocalDate.of(2022, 03, 01), null, "71677752076", "3265222666" , null ,set1, ca1);
 		
 		
 		setorRepository.saveAll(Arrays.asList(set1,set2));
 		cargoRepository.saveAll(Arrays.asList(ca1,ca2));
-		//habilitacaoRepository.saveAll(Arrays.asList(hab1, hab1));
+		zonaRepository.saveAll(Arrays.asList(zo1,zo2));
 		
 		funcionarioRepository.saveAll(Arrays.asList(func1,func2));
 		
@@ -235,33 +242,43 @@ public class DBService {
 		
 		
 		Servico serv1 = new Servico(null,"Conversao de fogão", new BigDecimal(340.00));
+		Servico serv2 = new Servico(null,"Teste de Estanqueidade", new BigDecimal(90.45));
+		
 		ServicoOrcamento serOrc1 = new ServicoOrcamento(orc1, serv1, 5, new BigDecimal(240.00), 1, 1);
-
-		servicoRepository.saveAll(Arrays.asList(serv1));
-		servicoOrcamentoRepository.saveAll(Arrays.asList(serOrc1));
+		ServicoOrcamento serOrc2 = new ServicoOrcamento(orc1, serv2, 0, new BigDecimal(90.45), 2, 1);
+		
+		servicoRepository.saveAll(Arrays.asList(serv1,serv2));
+		servicoOrcamentoRepository.saveAll(Arrays.asList(serOrc1, serOrc2));
 		
 		
 		
 		//Associar os itens ao orcamento
 		orc1.getItens().addAll(Arrays.asList(iorc1,iorc3));
 		orc2.getItens().addAll(Arrays.asList(iorc2));
-		
+		//associando itens aos ItemOrcamento
 		produ1.getItens().addAll(Arrays.asList(iorc1));
 		produ3.getItens().addAll(Arrays.asList(iorc2));
 		produ2.getItens().addAll(Arrays.asList(iorc3));
 		
 		itemOrcamentoRepository.saveAll(Arrays.asList(iorc1,iorc2, iorc3));
 		
+		//OS
 		
 		Os os1 = new Os(null, 1, LocalDate.of(2022, 3, 12), LocalDate.of(2022, 3, 8), LocalDate.of(2022, 3, 8), "Minha primeira OS no H2", 
-													ResultadoOs.REALIZADO, Turno.TARDE, StatusOs.ABERTO, func2, cl2, user1, e2, set2);
+				null, Turno.TARDE, StatusOs.ABERTO, func2, cl1, user1, e2, set2, zo2);
+		
+		ServicoOs servOs1 = new ServicoOs(os1, serv2, 0, new BigDecimal(90.45), 1, 1);
+		ServicoOs servOs2 = new ServicoOs(os1, serv1, 5, new BigDecimal(340.00), 1 , 1);
+		
+		//associar os servicos a OS
+		os1.getServicos().addAll(Arrays.asList(servOs1,servOs2));
+		
 		//associar o cliente a OS
 		cl1.getOs().addAll(Arrays.asList(os1));
-		
 		osRepository.saveAll(Arrays.asList(os1));
+		servicoOsRepository.saveAll(Arrays.asList(servOs1, servOs2));
 		
-		ServicoOs ServOs1 = new ServicoOs(os1, serv1, 5, new BigDecimal(340.00), 1 , 1);
-		servicoOsRepository.saveAll(Arrays.asList(ServOs1));
+		
 		
 	}
 }

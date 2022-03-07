@@ -17,6 +17,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Produto implements Serializable {
 
@@ -28,6 +30,7 @@ public class Produto implements Serializable {
 	protected String descricao;
 	protected BigDecimal preco;
 	
+	@JsonIgnore
 	public List<Orcamento> getOrcamentos() {
 		List<Orcamento> lista = new ArrayList<>();
 		for (ItemOrcamento x : itens) {
@@ -36,14 +39,25 @@ public class Produto implements Serializable {
 		return lista;
 	}
 	
+	
 	@ManyToOne
 	@JoinColumn(name="categoriaProduto_id")
 	protected CategoriaProduto categoriaProduto;
+	
+	// neste sistema um produto somente possui uma categoria
+	//@JsonIgnore
+	//@ManyToMany
+	//@JoinTable(name= "PRODUTO_CATEGORIA_JOIN", 
+		//	joinColumns = @JoinColumn(name = "produto_id"),
+		//	inverseJoinColumns = @JoinColumn(name = "categoriaProduto_id"))
+	//private List<CategoriaProduto> categoriaProdutos = new ArrayList<>();
+	
 	
 	@ManyToOne
 	@JoinColumn(name="unidadeMedida_id")
 	protected UnidadeMedida unidadeMedida;
 	
+	@JsonIgnore
 	@OneToMany(mappedBy="id.produto")
 	private Set<ItemOrcamento> itens = new HashSet<>();
 	
@@ -76,6 +90,7 @@ public class Produto implements Serializable {
 		this.descricao = descricao;
 	}
 
+	@JsonIgnore // teste para ocultar o preço no postmam
 	public BigDecimal getPreco() {
 		return preco;
 	}

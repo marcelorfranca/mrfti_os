@@ -7,10 +7,13 @@ import java.util.Objects;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class ServicoOrcamento implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@JsonIgnore
 	@EmbeddedId
 	private ServicoOrcamentoPK id = new ServicoOrcamentoPK();
 	
@@ -18,6 +21,7 @@ public class ServicoOrcamento implements Serializable {
 	private BigDecimal preco;
 	private Integer quantidade;
 	private Integer numOrcamento;
+	
 	
 	public ServicoOrcamento() {
 	}
@@ -33,12 +37,14 @@ public class ServicoOrcamento implements Serializable {
 		this.numOrcamento = numOrcamento;
 	}
 
+	@JsonIgnore
 	public Orcamento getOrcamento() {
 		return id.getOrcamento();
 	}
 	
-	public Servico getServico() {
-		return id.getServico();
+	
+	public String getServico() {
+		return id.getServico().getDescricao(); // alterei para String e getDescricao evitando loop de serialização.
 	}
 	
 	

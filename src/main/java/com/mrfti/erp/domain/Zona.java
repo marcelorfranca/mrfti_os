@@ -14,7 +14,7 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Setor implements Serializable {
+public class Zona implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -25,74 +25,52 @@ public class Setor implements Serializable {
 	
 	
 	@JsonIgnore
-	@OneToMany(mappedBy = "setor") // um setor para muitos funcionarios
-	private List<Funcionario> funcionarios = new ArrayList<>();
+	@OneToMany(mappedBy = "zona") // uma zona para muitas Ordens de Serviço
+	private List<Os> Oss = new ArrayList<>();
 	
 	
-	@JsonIgnore
-	@OneToMany(mappedBy = "setor") // um setor para muitos orcamentos
-	private List<Orcamento> orcamentos = new ArrayList<>();
-	
-	@JsonIgnore
-	@OneToMany(mappedBy = "setor")
-	private List<Os> OSs = new ArrayList<>();
-	
-	
-	public Setor() {
+	public Zona() {
 	}
 
-	public Setor(Integer id, String descricao) {
+
+	public Zona(Integer id, String descricao) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
 	}
 
+
+
+
 	public Integer getId() {
 		return id;
 	}
+
 
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
+
 	public String getDescricao() {
 		return descricao;
 	}
+
 
 	public void setDescricao(String descricao) {
 		this.descricao = descricao;
 	}
 
-	public List<Funcionario> getFuncionarios() {
-		return funcionarios;
-	}
-
-	public void setFuncionarios(List<Funcionario> funcionarios) {
-		this.funcionarios = funcionarios;
-	}
-	
 	@JsonIgnore
-	public List<Orcamento> getOrcamentos() {
-		return orcamentos;
+	public List<Os> getOss() {
+		return Oss;
 	}
 
-	public void setOrcamentos(List<Orcamento> orcamentos) {
-		this.orcamentos = orcamentos;
-	}
-	
-	@JsonIgnore
-	public List<Os> getOSs() {
-		return OSs;
+
+	public void setOss(List<Os> oss) {
+		Oss = oss;
 	}
 
-	public void setOSs(List<Os> oSs) {
-		OSs = oSs;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
 
 	@Override
 	public boolean equals(Object obj) {
@@ -102,10 +80,10 @@ public class Setor implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Setor other = (Setor) obj;
+		Zona other = (Zona) obj;
 		return Objects.equals(id, other.id);
 	}
-
+	
 	
 	
 }

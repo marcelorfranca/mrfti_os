@@ -25,7 +25,7 @@ public class Cliente extends Pessoa{
 	private String cpfOrCnpj;
 	private TipoCliente tipoCliente;
 	
-	@JsonIgnore			//@JsonManagedReference
+	@JsonIgnore			
 	@OneToMany(mappedBy = "cliente") // um cliente para muitas OSs
 	private List<Os> os = new ArrayList<>();
 	
@@ -33,8 +33,7 @@ public class Cliente extends Pessoa{
 	@OneToMany(mappedBy = "cliente") // um cliente para muitos orcamentos
 	private List<Orcamento> orcamentos = new ArrayList<>();
 	
-	
-	@JsonIgnore 
+	 
 	@ElementCollection
 	@CollectionTable(name="TELEFONE_CLIENTE")
 	private Set<String> telefones = new HashSet<>(); // entidade fraca

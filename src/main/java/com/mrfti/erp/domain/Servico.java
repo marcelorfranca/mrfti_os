@@ -15,6 +15,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Servico implements Serializable {
 
@@ -28,6 +30,7 @@ public class Servico implements Serializable {
 	
 	
 	//Orçamento
+	@JsonIgnore
 	public List<Orcamento> getOrcamentos() {
 		List<Orcamento> lista = new ArrayList<>();
 		for (ServicoOrcamento x : servicos) {
@@ -36,14 +39,15 @@ public class Servico implements Serializable {
 		return lista;
 	}
 	
-		
+	@JsonIgnore	
 	@OneToMany(mappedBy="id.servico")
 	private Set<ServicoOrcamento> servicos = new HashSet<>();
 	
 	
 	
 	// OS
-	public List<Os> getOss() {
+	@JsonIgnore
+	public List<Os> getOs() {
 		List<Os> lista = new ArrayList<>();
 		for (ServicoOs x : OSs) {
 			lista.add(x.getOs());
@@ -51,7 +55,7 @@ public class Servico implements Serializable {
 		return lista;
 	}
 	
-		
+	@JsonIgnore		
 	@OneToMany(mappedBy="id.servico")
 	private Set<ServicoOs> OSs = new HashSet<>();
 	
@@ -84,6 +88,7 @@ public class Servico implements Serializable {
 		this.descricao = descricao;
 	}
 
+	@JsonIgnore // ocultando na saida do postmam para test
 	public BigDecimal getPreco() {
 		return preco;
 	}
@@ -92,6 +97,7 @@ public class Servico implements Serializable {
 		this.preco = preco;
 	}
 
+	
 	public Set<ServicoOrcamento> getItens() {
 		return servicos;
 	}
@@ -100,7 +106,7 @@ public class Servico implements Serializable {
 		this.servicos = servicos;
 	}
 	
-	
+
 	public Set<ServicoOrcamento> getServicos() {
 		return servicos;
 	}

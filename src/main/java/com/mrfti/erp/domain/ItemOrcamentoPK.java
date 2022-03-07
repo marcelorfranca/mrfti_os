@@ -21,7 +21,7 @@ public class ItemOrcamentoPK implements Serializable { // classe chave comporta 
 	@JoinColumn(name="produto_id")
 	private Produto produto;
 	
-	// nesta classe não usamos construtores
+	// nesta classe não usamos construtores pelo fato só haver coleções.
 	
 	public Orcamento getOrcamento() {
 		return orcamento;
@@ -29,12 +29,14 @@ public class ItemOrcamentoPK implements Serializable { // classe chave comporta 
 	public void setOrcamento(Orcamento orcamento) {
 		this.orcamento = orcamento;
 	}
+	
 	public Produto getProduto() {
 		return produto;
 	}
 	public void setProduto(Produto produto) {
 		this.produto = produto;
 	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(orcamento, produto);

@@ -11,7 +11,6 @@ import javax.persistence.ManyToOne;
 public class ServicoOsPK implements Serializable { // classe chave comporta da classe OS e serviço 
 	private static final long serialVersionUID = 1L;
 	
-	
 	@ManyToOne
 	@JoinColumn(name="os_id")
 	private Os os;

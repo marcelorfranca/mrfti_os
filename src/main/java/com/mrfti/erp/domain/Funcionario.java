@@ -58,10 +58,11 @@ public class Funcionario extends Pessoa{
 		@CollectionTable(name="TELEFONE_FUNCIONARIO") // cria uma tabela
 		private Set<String> telefones = new HashSet<>(); // entidade fraca
 		
-		
+		@JsonIgnore
 		@ManyToOne
 		@JoinColumn(name = "setor_id") // relacionando as classes
 		private Setor setor;
+		
 		
 		@ManyToOne
 		@JoinColumn(name = "cargo_id") 
@@ -165,7 +166,7 @@ public class Funcionario extends Pessoa{
 			this.telefones = telefones;
 		}
 
-
+		@JsonIgnore
 		public Setor getSetor() {
 			return setor;
 		}
@@ -173,13 +174,17 @@ public class Funcionario extends Pessoa{
 			this.setor = setor;
 		}
 
+		@JsonIgnore
 		public Cargo getCargo() {
 			return cargo;
 		}
+		
+		
 		public void setCargo(Cargo cargo) {
 			this.cargo = cargo;
 		}
 
+		
 		public List<Veiculo> getVeiculos() {
 			return veiculos;
 		}

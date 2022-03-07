@@ -7,10 +7,13 @@ import java.util.Objects;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class ItemOrcamento implements Serializable {
 	private static final long serialVersionUID = 1L;
 
+	@JsonIgnore
 	@EmbeddedId
 	private ItemOrcamentoPK id = new ItemOrcamentoPK();
 	
@@ -33,9 +36,11 @@ public class ItemOrcamento implements Serializable {
 		this.numOrcamento = numOrcamento;
 	}
 
+	@JsonIgnore
 	public Orcamento getOrcamento() {
 		return id.getOrcamento();
 	}
+	
 	
 	public Produto getProduto() {
 		return id.getProduto();
