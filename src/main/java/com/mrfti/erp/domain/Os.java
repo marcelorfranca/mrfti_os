@@ -16,7 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mrfti.erp.domain.enums.ResultadoOs;
 import com.mrfti.erp.domain.enums.StatusOs;
 import com.mrfti.erp.domain.enums.Turno;

@@ -62,7 +62,7 @@ public class Usuario extends Pessoa {
 		this.senha = senha;
 	}
 
-	public Set<Perfil> getPerfis() { // tipo Perfil altado para Integer. Chamado o metodo la de Perfil
+	public Set<Perfil> getPerfis() { // tipo Perfil alterado para Integer. Chamado o metodo la de Perfil
 		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
 	}
 

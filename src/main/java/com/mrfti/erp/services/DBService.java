@@ -208,6 +208,9 @@ public class DBService {
 		Funcionario func2 = new Funcionario(null, "João da Silva", "joao@gmail.com", LocalDate.of(2022, 03, 29), "1265" , 'S', 'S', LocalDate.of(2022, 03, 01), null, "71677752076", "3265222666" , null ,set1, ca1);
 		
 		
+		func1.getTelefones().addAll(Arrays.asList("219992.1133", "29898.2110"));
+		func2.getTelefones().addAll(Arrays.asList("229985.1532", "21997.3214"));
+		
 		setorRepository.saveAll(Arrays.asList(set1,set2));
 		cargoRepository.saveAll(Arrays.asList(ca1,ca2));
 		zonaRepository.saveAll(Arrays.asList(zo1,zo2));
