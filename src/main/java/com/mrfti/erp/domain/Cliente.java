@@ -2,14 +2,10 @@ package com.mrfti.erp.domain;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
@@ -33,19 +29,19 @@ public class Cliente extends Pessoa{
 	@OneToMany(mappedBy = "cliente") // um cliente para muitos orcamentos
 	private List<Orcamento> orcamentos = new ArrayList<>();
 	
-	 
-	@ElementCollection
-	@CollectionTable(name="TELEFONE_CLIENTE")
-	private Set<String> telefones = new HashSet<>(); // entidade fraca
+	
+	@JsonIgnore 
+	@OneToMany(mappedBy="cliente")
+	private List<Endereco> enderecos = new ArrayList<>();
 	
 	public Cliente() {
 	}
 
 	
 
-	public Cliente(Integer id, String nome, String email, LocalDate dataInclusao, String cpfOrCnpj,
+	public Cliente(Integer id, String nome, String email, LocalDate dataInclusao, String telefone1,String telefone2, String telefone3, String cpfOrCnpj,
 			TipoCliente tipoCliente) {
-		super(id, nome, email, dataInclusao);
+		super(id, nome, email, dataInclusao,  telefone1, telefone2, telefone3);
 		this.cpfOrCnpj = cpfOrCnpj;
 		this.tipoCliente = tipoCliente;
 	}
@@ -83,14 +79,16 @@ public class Cliente extends Pessoa{
 	public void setOrcamentos(List<Orcamento> orcamentos) {
 		this.orcamentos = orcamentos;
 	}
-
-	public Set<String> getTelefones() {
-		return telefones;
+	
+	public List<Endereco> getEnderecos() {
+		return enderecos;
 	}
 
-	public void setTelefones(Set<String> telefones) {
-		this.telefones = telefones;
+
+	public void setEnderecos(List<Endereco> enderecos) {
+		this.enderecos = enderecos;
 	}
+
 
 	@Override
 	public int hashCode() {

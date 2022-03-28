@@ -1,22 +1,15 @@
-package com.mrfti.erp.domain;
+package com.mrfti.erp.domain.dtos;
 
 import java.io.Serializable;
-import java.util.Objects;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import com.mrfti.erp.domain.Cliente;
+import com.mrfti.erp.domain.Endereco;
+import com.mrfti.erp.domain.Funcionario;
+import com.mrfti.erp.domain.Municipio;
 
-@Entity
-public class Endereco implements Serializable { 
-	
+public class EnderecoDTO implements Serializable { 
 	private static final long serialVersionUID = 1L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String logradouro;
 	private String numero;
@@ -24,35 +17,26 @@ public class Endereco implements Serializable {
 	private String bairro;
 	private String cep;
 	
-	 
-	@ManyToOne
-	@JoinColumn(name="funcionario_id")
 	private Funcionario funcionario;
 	
-	@ManyToOne
-	@JoinColumn(name="cliente_id")
 	private Cliente cliente;
 	
-	
-	@ManyToOne
-	@JoinColumn(name="municipio_id")
 	private Municipio municipio;
 	
-	public Endereco() {
+	public EnderecoDTO() {
 	}
 
-	public Endereco(Integer id, String logradouro, String numero, String complemento, String bairro, String cep,
-			Funcionario funcionario, Cliente cliente, Municipio municipio) {
+	public EnderecoDTO(Endereco obj) {
 		super();
-		this.id = id;
-		this.logradouro = logradouro;
-		this.numero = numero;
-		this.complemento = complemento;
-		this.bairro = bairro;
-		this.cep = cep;
-		this.funcionario = funcionario;
-		this.cliente = cliente;
-		this.setMunicipio(municipio);
+		this.id = obj.getId();
+		this.logradouro = obj.getLogradouro();
+		this.numero = obj.getNumero();
+		this.complemento = obj.getComplemento();
+		this.bairro = obj.getBairro();
+		this.cep = obj.getCep();
+		this.funcionario = obj.getFuncionario();
+		this.cliente = obj.getCliente();
+		this.municipio = obj.getMunicipio();
 	}
 
 	public Integer getId() {
@@ -128,24 +112,5 @@ public class Endereco implements Serializable {
 	public void setMunicipio(Municipio municipio) {
 		this.municipio = municipio;
 	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Endereco other = (Endereco) obj;
-		return Objects.equals(id, other.id);
-	}
-	
-	
 	
 }

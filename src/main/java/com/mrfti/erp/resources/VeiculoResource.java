@@ -10,27 +10,29 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mrfti.erp.domain.Orcamento;
-import com.mrfti.erp.domain.dtos.OrcamentoDTO;
-import com.mrfti.erp.services.OrcamentoService;
+import com.mrfti.erp.domain.Veiculo;
+import com.mrfti.erp.domain.dtos.VeiculoDTO;
+import com.mrfti.erp.services.VeiculoService;
 
 @RestController
-@RequestMapping(value="/orcamentos")
-public class OrcamentoResource {
+@RequestMapping(value="/veiculos")
+public class VeiculoResource {
 
 	@Autowired
-	private OrcamentoService  orcamentoService;
+	private VeiculoService  veiculoService;
+	
 	
 	@GetMapping
-	public ResponseEntity<List<OrcamentoDTO>> findAll() {
-		List<Orcamento> list = orcamentoService.findAll();
-		List<OrcamentoDTO> listDTO = list.stream().map(obj -> new OrcamentoDTO(obj)).collect(Collectors.toList()); //converter DTO
+	public ResponseEntity<List<VeiculoDTO>> findAll() {
+		List<Veiculo> list = veiculoService.findAll();
+		List<VeiculoDTO> listDTO = list.stream().map(obj -> new VeiculoDTO(obj)).collect(Collectors.toList()); //converter DTO
 		return ResponseEntity.ok().body(listDTO);
+
 	}
 			
 	@GetMapping(value="/{id}")
-	public ResponseEntity<Orcamento> findById(@PathVariable Integer id) {
-		Orcamento obj  = orcamentoService.findById(id);
+	public ResponseEntity<Veiculo> findById(@PathVariable Integer id) {
+	Veiculo obj  = veiculoService.findById(id);
 	return ResponseEntity.ok().body(obj);
 	}
 	

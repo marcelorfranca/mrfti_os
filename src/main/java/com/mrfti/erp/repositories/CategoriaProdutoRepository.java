@@ -6,6 +6,6 @@ import org.springframework.stereotype.Repository;
 import com.mrfti.erp.domain.CategoriaProduto;
 
 @Repository
-public interface CategoriaRepository extends JpaRepository<CategoriaProduto, Integer>{
+public interface CategoriaProdutoRepository extends JpaRepository<CategoriaProduto, Integer>{
 
 }

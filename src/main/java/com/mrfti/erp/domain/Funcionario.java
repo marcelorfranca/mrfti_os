@@ -2,23 +2,18 @@ package com.mrfti.erp.domain;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
-import javax.persistence.CollectionTable;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import org.hibernate.validator.constraints.br.CPF;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mrfti.erp.domain.dtos.FuncionarioDTO;
 
 @Entity
 public class Funcionario extends Pessoa{
@@ -36,7 +31,7 @@ public class Funcionario extends Pessoa{
 		@JsonFormat(pattern = "dd/MM/yyyy")
 		protected LocalDate demissao;
 		
-		@CPF
+		
 		@Column(unique = true)
 		protected String cpf;
 		
@@ -54,9 +49,6 @@ public class Funcionario extends Pessoa{
 		@OneToMany(mappedBy = "funcionario") // um func para muitos orcamentos
 		private List<Orcamento> orcamentos = new ArrayList<>();
 		
-		@ElementCollection
-		@CollectionTable(name="TELEFONE_FUNCIONARIO") // cria uma tabela
-		private Set<String> telefones = new HashSet<>(); // entidade fraca
 		
 		@JsonIgnore
 		@ManyToOne
@@ -74,15 +66,20 @@ public class Funcionario extends Pessoa{
 		private List<Veiculo> veiculos = new ArrayList<>();
 		
 		
+		@JsonIgnore 
+		@OneToMany(mappedBy="funcionario")
+		private List<Endereco> enderecos = new ArrayList<>();
+		
+		
 		public Funcionario() {
 		}
 
 		
 		
 		
-		public Funcionario(Integer id, String nome, String email, LocalDate dataInclusao, String matricula, Character ativo,
-				Character operacional, LocalDate admissao, LocalDate demissao, @CPF String cpf, String cnh , String fotoCnh , Setor setor, Cargo cargo) {
-			super(id, nome, email, dataInclusao);
+		public Funcionario(Integer id, String nome, String email, LocalDate dataInclusao, String telefone1,String telefone2, String telefone3, String matricula, Character ativo,
+				Character operacional, LocalDate admissao, LocalDate demissao, String cpf, String cnh , String fotoCnh , Setor setor, Cargo cargo) {
+			super(id, nome, email, dataInclusao, telefone1, telefone2, telefone3);
 			this.matricula = matricula;
 			this.ativo = ativo;
 			this.operacional = operacional;
@@ -94,6 +91,28 @@ public class Funcionario extends Pessoa{
 			this.cnh = cnh;
 			this.fotoCnh = fotoCnh;
 		}
+		
+		
+		public Funcionario(FuncionarioDTO obj) { // codigo permite create instancia verificar
+			super();
+			this.matricula = obj.getMatricula();
+			this.ativo = obj.getAtivo();
+			this.operacional = obj.getOperacional();
+			this.admissao = obj.getAdmissao();
+			this.demissao = obj.getDemissao();
+			this.cpf = obj.getCpf();
+			this.cnh = obj.getCnh();
+			this.fotoCnh = obj.getFotoCnh();
+			this.setor = obj.getSetor();
+			this.cargo = obj.getCargo();
+			this.nome = obj.getNome();
+			this.email = obj.getEmail();
+			this.dataInclusao = obj.getDataInclusao();
+			this.telefone1 = obj.getTelefone1();
+			this.telefone2 = obj.getTelefone2();
+			this.telefone3 = obj.getTelefone3();
+		}
+
 
 		public String getMatricula() {
 			return matricula;
@@ -157,16 +176,9 @@ public class Funcionario extends Pessoa{
 		public void setOrcamentos(List<Orcamento> orcamentos) {
 			this.orcamentos = orcamentos;
 		}
+		
 
-
-		public Set<String> getTelefones() {
-			return telefones;
-		}
-		public void setTelefones(Set<String> telefones) {
-			this.telefones = telefones;
-		}
-
-		@JsonIgnore
+		//@JsonIgnore
 		public Setor getSetor() {
 			return setor;
 		}
@@ -174,7 +186,7 @@ public class Funcionario extends Pessoa{
 			this.setor = setor;
 		}
 
-		@JsonIgnore
+		//@JsonIgnore
 		public Cargo getCargo() {
 			return cargo;
 		}
@@ -207,6 +219,16 @@ public class Funcionario extends Pessoa{
 		public void setFotoCnh(String fotoCnh) {
 			this.fotoCnh = fotoCnh;
 		}
+		
+		public List<Endereco> getEnderecos() {
+			return enderecos;
+		}
+
+		public void setEnderecos(List<Endereco> enderecos) {
+			this.enderecos = enderecos;
+		}
+
+
 
 
 		@Override

@@ -21,7 +21,7 @@ public class Municipio implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Integer id;
-	protected String nome;
+	protected String nomeMunicipio;
 	
 	@JsonIgnore 
 	@ManyToOne
@@ -34,7 +34,7 @@ public class Municipio implements Serializable{
 	public Municipio(Integer id, String nome, Uf uf) {
 		super();
 		this.id = id;
-		this.nome = nome;
+		this.nomeMunicipio = nome;
 		this.uf = uf;
 	}
 
@@ -47,11 +47,11 @@ public class Municipio implements Serializable{
 	}
 
 	public String getNome() {
-		return nome;
+		return nomeMunicipio;
 	}
 
 	public void setNome(String nome) {
-		this.nome = nome;
+		this.nomeMunicipio = nome;
 	}
 
 	public Uf getUf() {

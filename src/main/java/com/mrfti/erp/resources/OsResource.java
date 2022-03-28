@@ -1,6 +1,7 @@
 package com.mrfti.erp.resources;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mrfti.erp.domain.Os;
+import com.mrfti.erp.domain.dtos.OsDTO;
 import com.mrfti.erp.services.OsService;
 
 @RestController
@@ -21,10 +23,10 @@ public class OsResource {
 	
 	
 	@GetMapping
-	public ResponseEntity<List<Os>> findAll() {
+	public ResponseEntity<List<OsDTO>> findAll() {
 		List<Os> list = OsService.findAll();
-		return ResponseEntity.ok().body(list);
-		
+		List<OsDTO> listDTO = list.stream().map(obj -> new OsDTO(obj)).collect(Collectors.toList()); //converter DTO
+		return ResponseEntity.ok().body(listDTO);
 
 	}
 			

@@ -21,7 +21,7 @@ public class Uf implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Integer id;
-	protected String nome;
+	protected String nomeUf;
 	protected String sigla;
 	
 	@JsonIgnore 
@@ -34,7 +34,7 @@ public class Uf implements Serializable {
 	public Uf(Integer id, String nome, String sigla) {
 		super();
 		this.id = id;
-		this.nome = nome;
+		this.nomeUf = nome;
 		this.sigla = sigla;
 	}
 
@@ -47,11 +47,11 @@ public class Uf implements Serializable {
 	}
 
 	public String getNome() {
-		return nome;
+		return nomeUf;
 	}
 
 	public void setNome(String nome) {
-		this.nome = nome;
+		this.nomeUf = nome;
 	}
 
 	public String getSigla() {

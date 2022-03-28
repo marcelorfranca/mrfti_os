@@ -45,8 +45,8 @@ public class Usuario extends Pessoa {
 	
 	
 
-	public Usuario(Integer id, String nome, String email, LocalDate dataInclusao, String senha, Perfil perfil) {
-		super(id, nome, email, dataInclusao);
+	public Usuario(Integer id, String nome, String email, LocalDate dataInclusao, String telefone1,String telefone2, String telefone3, String senha, Perfil perfil) {
+		super(id, nome, email, dataInclusao, telefone1, telefone2, telefone3);
 		this.senha = senha;
 		addPerfil(Perfil.CLIENTE);
 	}

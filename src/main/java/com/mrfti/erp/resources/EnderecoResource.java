@@ -17,46 +17,46 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.mrfti.erp.domain.CategoriaProduto;
-import com.mrfti.erp.services.CategoriaProdutoService;
+import com.mrfti.erp.domain.Endereco;
+import com.mrfti.erp.services.EnderecoService;
 
 @RestController
-@RequestMapping(value="/categorias")
-public class CategoriaProdutoResource {
+@RequestMapping(value="/enderecos")
+public class EnderecoResource {
 
 	@Autowired
-	private CategoriaProdutoService  categoriaProdutoService;
+	private EnderecoService enderecoService;
 	
 	
 	@GetMapping
-	public ResponseEntity<List<CategoriaProduto>> findAll() {
-		List<CategoriaProduto> list = categoriaProdutoService.findAll();
+	public ResponseEntity<List<Endereco>> findAll() {
+		List<Endereco> list = enderecoService.findAll();
 		return ResponseEntity.ok().body(list);
 	}
 			
 	@GetMapping(value="/{id}")
-	public ResponseEntity<CategoriaProduto> findById(@PathVariable Integer id) {
-	CategoriaProduto obj  = categoriaProdutoService.findById(id);
+	public ResponseEntity<Endereco> findById(@PathVariable Integer id) {
+	Endereco obj  = enderecoService.findById(id);
 	return ResponseEntity.ok().body(obj);
 	}
 	
 	
 	@PostMapping
-	public ResponseEntity<CategoriaProduto> create(@Valid @RequestBody CategoriaProduto obj) {
-		CategoriaProduto newObj = categoriaProdutoService.create(obj);
+	public ResponseEntity<Endereco> create(@Valid @RequestBody Endereco obj) {
+		Endereco newObj = enderecoService.create(obj);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(newObj.getId()).toUri();
 		return ResponseEntity.created(uri).build();
 	}
 	
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<CategoriaProduto> update(@PathVariable Integer id,@Valid @RequestBody CategoriaProduto obj) {
-		return ResponseEntity.ok().body(categoriaProdutoService.update(id, obj));
+	public ResponseEntity<Endereco> update(@PathVariable Integer id,@Valid @RequestBody Endereco obj) {
+		return ResponseEntity.ok().body(enderecoService.update(id, obj));
 	}
 	
 	@DeleteMapping(value= "/{id}")
-	public ResponseEntity<CategoriaProduto> delete(@PathVariable Integer id) {
-		categoriaProdutoService.delete(id);
+	public ResponseEntity<Endereco> delete(@PathVariable Integer id) {
+		enderecoService.delete(id);
 		return ResponseEntity.noContent().build();
 	}
 	

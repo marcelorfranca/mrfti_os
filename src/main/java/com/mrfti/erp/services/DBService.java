@@ -37,7 +37,7 @@ import com.mrfti.erp.domain.enums.StatusOs;
 import com.mrfti.erp.domain.enums.TipoCliente;
 import com.mrfti.erp.domain.enums.Turno;
 import com.mrfti.erp.repositories.CargoRepository;
-import com.mrfti.erp.repositories.CategoriaRepository;
+import com.mrfti.erp.repositories.CategoriaProdutoRepository;
 import com.mrfti.erp.repositories.ClienteRepository;
 import com.mrfti.erp.repositories.EnderecoRepository;
 import com.mrfti.erp.repositories.FuncionarioRepository;
@@ -67,7 +67,7 @@ public class DBService {
 	@Autowired
 	private UfRepository ufRepository;
 	@Autowired
-	private CategoriaRepository categoriaRepository;
+	private CategoriaProdutoRepository categoriaRepository;
 	@Autowired
 	private UnidadeMedidaRepository unidadeMedidaRepository;
 	@Autowired
@@ -158,15 +158,13 @@ public class DBService {
 		produtoRepository.saveAll(Arrays.asList(produ1, produ2, produ3));
 		
 		// criando o CLiente
-		Cliente cl1 = new Cliente(null, "Maria da Silva", "maria@gmail.com", LocalDate.now() , "02343342741", TipoCliente.PESSOAFISICA);
-		Cliente cl2 = new Cliente(null, "Jurema Santos", "jurema@hotmail.com", LocalDate.of(2022, 2, 10), "623.689.620-85", TipoCliente.PESSOAFISICA);
+		Cliente cl1 = new Cliente(null, "Maria da Silva", "maria@gmail.com", LocalDate.now(),  "213361-3200" , null , null , "02343342741", TipoCliente.PESSOAFISICA);
+		Cliente cl2 = new Cliente(null, "Jurema Santos", "jurema@hotmail.com", LocalDate.of(2022, 2, 10), "21-9987-4321" , null , null , "623.689.620-85", TipoCliente.PESSOAFISICA);
 		
-		cl1.getTelefones().addAll(Arrays.asList("219814.5821", "219741.2129"));
-		cl2.getTelefones().addAll(Arrays.asList("221541.1831", "219888.2333"));
 		
 		// criando registro na tabela endereço
-		Endereco e1 = new Endereco(null, "Av dos Italianos", "1146", "casa 28", "Coelho Neto", "21510-105", cl1, mun1);
-		Endereco e2 = new Endereco(null, "Rua Uranos", "96", null, "Olaria", "21511-145", cl1, mun1);
+		Endereco e1 = new Endereco(null, "Av dos Italianos", "1146", "casa 28", "Coelho Neto", "21510-105", null ,cl1, mun1);
+		Endereco e2 = new Endereco(null, "Rua Uranos", "96", null, "Olaria", "21511-145", null ,cl1, mun1);
 				
 		//Relacionando o cliente aos endereços
 		cl1.getEnderecos().addAll(Arrays.asList(e2));
@@ -199,25 +197,25 @@ public class DBService {
 		
 		Cargo ca1 = new Cargo(null, "Analista de Suporte");
 		Cargo ca2 = new Cargo(null, "Programador");
+		Cargo ca3 = new Cargo(null, "Técnoco Gasista Senior");
 		
 		Zona zo1 = new Zona(null, "Zona Oeste");
 		Zona zo2 = new Zona(null, "Zona Sul");
 		
 		
-		Funcionario func1 = new Funcionario(null, "Vagner Moura", "vagner@gmail.com", LocalDate.of(2022, 04, 14), "1266" , 'S', 'S', LocalDate.of(2022, 03, 01), null, "02343342741", "541258922" , null ,set1, ca1);
-		Funcionario func2 = new Funcionario(null, "João da Silva", "joao@gmail.com", LocalDate.of(2022, 03, 29), "1265" , 'S', 'S', LocalDate.of(2022, 03, 01), null, "71677752076", "3265222666" , null ,set1, ca1);
+		Funcionario func1 = new Funcionario(null, "Vagner Moura", "vagner@gmail.com", LocalDate.of(2022, 04, 14), null , null , null ,"1266" , 'S', 'S', LocalDate.of(2022, 03, 01), null, "02343342741", "541258922" , null ,set1, ca1);
+		Funcionario func2 = new Funcionario(null, "João da Silva", "joao@gmail.com", LocalDate.of(2022, 03, 29),"219871.1525" , null , null ,"1265" , 'S', 'S', LocalDate.of(2022, 03, 01), null, "71677752076", "3265222666" , null ,set1, ca1);
 		
 		
-		func1.getTelefones().addAll(Arrays.asList("219992.1133", "29898.2110"));
-		func2.getTelefones().addAll(Arrays.asList("229985.1532", "21997.3214"));
+		
 		
 		setorRepository.saveAll(Arrays.asList(set1,set2));
-		cargoRepository.saveAll(Arrays.asList(ca1,ca2));
+		cargoRepository.saveAll(Arrays.asList(ca1,ca2, ca3));
 		zonaRepository.saveAll(Arrays.asList(zo1,zo2));
 		
 		funcionarioRepository.saveAll(Arrays.asList(func1,func2));
 		
-		Usuario user1 = new Usuario(null, "Jorge Boca", "jorge@gmail.com", LocalDate.of(2021, 12, 20), "123", Perfil.CLIENTE);
+		Usuario user1 = new Usuario(null, "Jorge Boca", "jorge@gmail.com", LocalDate.of(2021, 12, 20), null, null, null, "123", Perfil.CLIENTE);
 		
 		usuarioRepository.saveAll(Arrays.asList(user1));
 		

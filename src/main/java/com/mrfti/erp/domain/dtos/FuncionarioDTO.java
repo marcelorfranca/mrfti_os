@@ -3,8 +3,14 @@ package com.mrfti.erp.domain.dtos;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import javax.validation.constraints.NotNull;
+
+import org.hibernate.validator.constraints.br.CPF;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.mrfti.erp.domain.Cargo;
 import com.mrfti.erp.domain.Funcionario;
+import com.mrfti.erp.domain.Setor;
 
 public class FuncionarioDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -13,8 +19,13 @@ public class FuncionarioDTO implements Serializable {
 	protected Integer id;
 	protected String nome;
 	
+	@NotNull(message = "Campo EMAIL é requerido")
 	protected String email;
 	
+	@NotNull(message = "Campo Telefone é requerido")
+	protected String telefone1;
+	protected String telefone2;
+	protected String telefone3;
 	
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	protected LocalDate dataInclusao = LocalDate.now();
@@ -30,11 +41,15 @@ public class FuncionarioDTO implements Serializable {
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	protected LocalDate demissao;
 	
+	@NotNull(message = "Campo CPF é requerido")
+	@CPF
 	protected String cpf;
 	
 	private String cnh;
-	
 	private String fotoCnh;
+	private Setor setor;
+	private Cargo cargo;
+	
 	
 	
 	
@@ -43,10 +58,13 @@ public class FuncionarioDTO implements Serializable {
 	}
 
 	public FuncionarioDTO(Funcionario obj) {
-		//super();
+		super();
 		this.id = obj.getId();
 		this.nome = obj.getNome();
 		this.email = obj.getEmail();
+		this.telefone1 = obj.getTelefone1();
+		this.telefone2 = obj.getTelefone2();
+		this.telefone3 = obj.getTelefone3();
 		this.dataInclusao = obj.getDataInclusao();
 		this.matricula = obj.getMatricula();
 		this.ativo = obj.getAtivo();
@@ -56,6 +74,9 @@ public class FuncionarioDTO implements Serializable {
 		this.cpf = obj.getCpf();
 		this.cnh = obj.getCnh();
 		this.fotoCnh = obj.getFotoCnh();
+		this.cargo = obj.getCargo();
+		this.setor = obj.getSetor();
+	
 	}
 
 	public Integer getId() {
@@ -154,9 +175,45 @@ public class FuncionarioDTO implements Serializable {
 		this.fotoCnh = fotoCnh;
 	}
 
-	
-	
+	public Setor getSetor() {
+		return setor;
+	}
 
+	public void setSetor(Setor setor) {
+		this.setor = setor;
+	}
+
+	public Cargo getCargo() {
+		return cargo;
+	}
+
+	public void setCargo(Cargo cargo) {
+		this.cargo = cargo;
+	}
+
+	public String getTelefone1() {
+		return telefone1;
+	}
+
+	public void setTelefone1(String telefone1) {
+		this.telefone1 = telefone1;
+	}
+
+	public String getTelefone2() {
+		return telefone2;
+	}
+
+	public void setTelefone2(String telefone2) {
+		this.telefone2 = telefone2;
+	}
+
+	public String getTelefone3() {
+		return telefone3;
+	}
+
+	public void setTelefone3(String telefone3) {
+		this.telefone3 = telefone3;
+	}
 	
 	
 }

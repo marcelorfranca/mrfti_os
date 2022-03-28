@@ -1,35 +1,21 @@
-package com.mrfti.erp.domain;
+package com.mrfti.erp.domain.dtos;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
-
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.mrfti.erp.domain.Cliente;
+import com.mrfti.erp.domain.Endereco;
+import com.mrfti.erp.domain.Funcionario;
+import com.mrfti.erp.domain.Orcamento;
+import com.mrfti.erp.domain.Pagamento;
+import com.mrfti.erp.domain.Setor;
+import com.mrfti.erp.domain.Usuario;
 
-@Entity
-public class Orcamento implements Serializable{
-
+public class OrcamentoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+
 	private Integer id;
-	
-	
-	@Column(unique = true)
 	private Integer numOrcamento;
 	
 	@JsonFormat(pattern = "dd/MM/yyyy")
@@ -41,60 +27,38 @@ public class Orcamento implements Serializable{
 	private String contato;
 	private String observacaoRecibo;
 	
-	
-	@OneToOne(cascade=CascadeType.ALL, mappedBy="orcamento")
 	private Pagamento pagamento;
 	
-	
-	@ManyToOne
-	@JoinColumn(name="endereco_orcamento_id")
 	private Endereco enderecoOrcamento;
 	
-	@ManyToOne
-	@JoinColumn(name = "setor_id") // relacionando as classes
 	private Setor setor;
 	
-	@ManyToOne
-	@JoinColumn(name = "funcionario_id") // relacionando as classes
 	private Funcionario funcionario;
 	
-	
-	@ManyToOne
-	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
 	
-	@ManyToOne
-	@JoinColumn(name = "usuario_id")
 	private Usuario usuario;
 	
 	
 	
-	@OneToMany(mappedBy="id.orcamento")
-	private Set<ItemOrcamento> itens = new HashSet<>();
-	
-	@OneToMany(mappedBy="id.orcamento")
-	private Set<ServicoOrcamento> servicos = new HashSet<>();
-	
-	public Orcamento() {
+	public OrcamentoDTO() {
 	}
 
-	public Orcamento(Integer id, Integer numOrcamento, LocalDate dataOrcamento, Character aprovado, Integer desconto,
-			String observacao, String contato, String observacaoRecibo, Endereco enderecoOrcamento, Setor setor,
-			Funcionario funcionario, Cliente cliente, Usuario usuario) {
-		super();
-		this.id = id;
-		this.numOrcamento = numOrcamento;
-		this.dataOrcamento = dataOrcamento;
-		this.aprovado = aprovado;
-		this.desconto = desconto;
-		this.observacao = observacao;
-		this.contato = contato;
-		this.observacaoRecibo = observacaoRecibo;
-		this.enderecoOrcamento = enderecoOrcamento;
-		this.setor = setor;
-		this.funcionario = funcionario;
-		this.cliente = cliente;
-		this.usuario = usuario;
+	public OrcamentoDTO(Orcamento obj) {
+		this.id = obj.getId();
+		this.numOrcamento = obj.getNumOrcamento();
+		this.dataOrcamento = obj.getDataOrcamento();
+		this.aprovado = obj.getAprovado();
+		this.desconto = obj.getDesconto();
+		this.observacao = obj.getObservacao();
+		this.contato = obj.getContato();
+		this.observacaoRecibo = obj.getObservacaoRecibo();
+		this.pagamento = obj.getPagamento();
+		this.enderecoOrcamento = obj.getEnderecoOrcamento();
+		this.setor = obj.getSetor();
+		this.funcionario = obj.getFuncionario();
+		this.cliente = obj.getCliente();
+		this.usuario = obj.getUsuario();
 	}
 
 	public Integer getId() {
@@ -161,7 +125,6 @@ public class Orcamento implements Serializable{
 		this.observacaoRecibo = observacaoRecibo;
 	}
 
-	
 	public Pagamento getPagamento() {
 		return pagamento;
 	}
@@ -170,7 +133,6 @@ public class Orcamento implements Serializable{
 		this.pagamento = pagamento;
 	}
 
-	
 	public Endereco getEnderecoOrcamento() {
 		return enderecoOrcamento;
 	}
@@ -178,8 +140,7 @@ public class Orcamento implements Serializable{
 	public void setEnderecoOrcamento(Endereco enderecoOrcamento) {
 		this.enderecoOrcamento = enderecoOrcamento;
 	}
-	
-	
+
 	public Setor getSetor() {
 		return setor;
 	}
@@ -188,7 +149,6 @@ public class Orcamento implements Serializable{
 		this.setor = setor;
 	}
 
-	
 	public Funcionario getFuncionario() {
 		return funcionario;
 	}
@@ -197,7 +157,6 @@ public class Orcamento implements Serializable{
 		this.funcionario = funcionario;
 	}
 
-	
 	public Cliente getCliente() {
 		return cliente;
 	}
@@ -206,7 +165,6 @@ public class Orcamento implements Serializable{
 		this.cliente = cliente;
 	}
 
-	
 	public Usuario getUsuario() {
 		return usuario;
 	}
@@ -215,45 +173,12 @@ public class Orcamento implements Serializable{
 		this.usuario = usuario;
 	}
 
-	
-	public Set<ItemOrcamento> getItens() {
-		return itens;
-	}
-
-	public void setItens(Set<ItemOrcamento> itens) {
-		this.itens = itens;
-	}
-	
-	
-	public Set<ServicoOrcamento> getServicos() {
-		return servicos;
-	}
-
-	public void setServicos(Set<ServicoOrcamento> servicos) {
-		this.servicos = servicos;
-	}
-	
-	
-	@Override
-	public int hashCode() {
-		return Objects.hash(id);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Orcamento other = (Orcamento) obj;
-		return Objects.equals(id, other.id);
-	}
-
+		
 	
 	
 	
 	
 	
 }
+
+
