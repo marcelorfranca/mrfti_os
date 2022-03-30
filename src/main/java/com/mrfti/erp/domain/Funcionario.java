@@ -50,7 +50,7 @@ public class Funcionario extends Pessoa{
 		private List<Orcamento> orcamentos = new ArrayList<>();
 		
 		
-		@JsonIgnore
+		
 		@ManyToOne
 		@JoinColumn(name = "setor_id") // relacionando as classes
 		private Setor setor;
@@ -66,7 +66,7 @@ public class Funcionario extends Pessoa{
 		private List<Veiculo> veiculos = new ArrayList<>();
 		
 		
-		@JsonIgnore 
+		
 		@OneToMany(mappedBy="funcionario")
 		private List<Endereco> enderecos = new ArrayList<>();
 		

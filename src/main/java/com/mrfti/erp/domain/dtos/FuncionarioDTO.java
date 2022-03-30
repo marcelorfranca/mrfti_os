@@ -3,8 +3,10 @@ package com.mrfti.erp.domain.dtos;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.br.CPF;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -17,6 +19,9 @@ public class FuncionarioDTO implements Serializable {
 
 	//Atributos da entidade Pessoa
 	protected Integer id;
+	
+	@NotNull(message = "Campo Nome é requerido")
+	@Length(min=5, max=120, message="O tamanho deve ser entre 5 e 120 caracteres")
 	protected String nome;
 	
 	@NotNull(message = "Campo EMAIL é requerido")
@@ -45,13 +50,26 @@ public class FuncionarioDTO implements Serializable {
 	@CPF
 	protected String cpf;
 	
+	@NotNull(message = "Campo CNH é requerido")
 	private String cnh;
 	private String fotoCnh;
 	private Setor setor;
 	private Cargo cargo;
 	
 	
+	//Atributos entidade endereço
+	@NotEmpty(message="Preenchimento obrigatório")
+	private String logradouro;
+	@NotEmpty(message="Preenchimento obrigatório")
+	private String numero;
+	private String complemento;
+	@NotEmpty(message="Preenchimento obrigatório")
+	private String bairro;
+	private String cep;
 	
+	private Integer enderecoId;
+	
+	private Integer municipioId;
 	
 	
 	public FuncionarioDTO() {
@@ -214,6 +232,63 @@ public class FuncionarioDTO implements Serializable {
 	public void setTelefone3(String telefone3) {
 		this.telefone3 = telefone3;
 	}
+
+	public String getLogradouro() {
+		return logradouro;
+	}
+
+	public void setLogradouro(String logradouro) {
+		this.logradouro = logradouro;
+	}
+
+	public String getNumero() {
+		return numero;
+	}
+
+	public void setNumero(String numero) {
+		this.numero = numero;
+	}
+
+	public String getComplemento() {
+		return complemento;
+	}
+
+	public void setComplemento(String complemento) {
+		this.complemento = complemento;
+	}
+
+	public String getBairro() {
+		return bairro;
+	}
+
+	public void setBairro(String bairro) {
+		this.bairro = bairro;
+	}
+
+	public String getCep() {
+		return cep;
+	}
+
+	public void setCep(String cep) {
+		this.cep = cep;
+	}
+
+	public Integer getMunicipioId() {
+		return municipioId;
+	}
+
+	public void setMunicipioId(Integer municipioId) {
+		this.municipioId = municipioId;
+	}
+
+	public Integer getEnderecoId() {
+		return enderecoId;
+	}
+
+	public void setEnderecoId(Integer enderecoId) {
+		this.enderecoId = enderecoId;
+	}
+	
 	
 	
 }

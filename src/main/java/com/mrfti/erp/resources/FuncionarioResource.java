@@ -51,10 +51,12 @@ public class FuncionarioResource {
 		return ResponseEntity.created(uri).build();
 	}
 	
-	@PutMapping(value = "/{id}") // ao executar no postman está tentando fazer insert.
+	@PutMapping(value = "/{id}")
 	public ResponseEntity<FuncionarioDTO> update(@PathVariable Integer id,@Valid @RequestBody FuncionarioDTO objDTO) {
 		Funcionario obj = service.update(id, objDTO);
+		
 		return ResponseEntity.ok().body(new FuncionarioDTO(obj));
+		
 	}
 	
 	@DeleteMapping(value = "/{id}")

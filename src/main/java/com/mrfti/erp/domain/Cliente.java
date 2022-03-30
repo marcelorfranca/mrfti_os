@@ -29,8 +29,6 @@ public class Cliente extends Pessoa{
 	@OneToMany(mappedBy = "cliente") // um cliente para muitos orcamentos
 	private List<Orcamento> orcamentos = new ArrayList<>();
 	
-	
-	@JsonIgnore 
 	@OneToMany(mappedBy="cliente")
 	private List<Endereco> enderecos = new ArrayList<>();
 	
