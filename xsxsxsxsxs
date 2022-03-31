@@ -1,0 +1,16 @@
+[33m82b5763[m[33m ([m[1;36mHEAD -> [m[1;32mmaster[m[33m, [m[1;31morigin/master[m[33m)[m 16 - Resources,services e repositorys de tabelas pequenas, Update Funcionario
+[33m5601229[m 15 - DTOs Funcionario, Cliente, Usuario, Produto, Servico, Resources FindAll e FindById
+[33mecdb633[m 14 - Orcamento e Os - findById, findAll e Endpoint OK
+[33mb1ec016[m 13 - Servico_OS, Orçamento finalizado e instancias criadas para Banco h2 ok
+[33m25ed7c9[m 12 - ItemOrcamento, Orcamento e produtos e Instancia de Orcamentos
+[33m43b963b[m 11 - Orcamento, Pagamento, instancias
+[33me5cc371[m 10 - Criado Cliente Resource e Service, findAll e findById. Evitado loop de dados no Postmam com JsonIgonre
+[33mc8b141b[m 9 - Criado DBService e instacias veiculares e repositórios veiculares, alguns ajustes na class Funcionario e Cliente
+[33m8879cae[m 8 - Criado perfil test e dev, classes veiculares relacionamentos com Funcionario
+[33m75d2f55[m 7 - Teste instancia de objetos - Cliente, Endereços, Municipios
+[33m40a0087[m 6 - Estrutura inicial de Exceptions, resource e servcices de Categoria
+[33m0316639[m 5 - Criado entidades e repositories Produto, UnidadeMedida e CatProduto. Instanciado no Banco.
+[33mbe250fd[m 4 - Criado codido inserir dados de teste Estados e cidades
+[33m2dfc3e5[m 3 - Criado UF e Municipios, Associacoes e JPA
+[33m5c27481[m Criado os Enums e a Classe com JPA
+[33m7185098[m 1 - iniciando projeto com enums

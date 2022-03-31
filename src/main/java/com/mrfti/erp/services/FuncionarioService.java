@@ -3,14 +3,10 @@ package com.mrfti.erp.services;
 import java.util.List;
 import java.util.Optional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.mrfti.erp.domain.Endereco;
 import com.mrfti.erp.domain.Funcionario;
@@ -24,11 +20,7 @@ import com.mrfti.erp.services.exceptions.DataIntegrityViolationException;
 import com.mrfti.erp.services.exceptions.ObjectnotFoundException;
 
 @Service
-@Transactional
 public class FuncionarioService {
-
-	 @PersistenceContext
-	 private EntityManager manager;
 	
 	
 	@Autowired
@@ -40,7 +32,6 @@ public class FuncionarioService {
 	
 	@Autowired
 	private EnderecoRepository enderecoRepository;
-	
 	
 	
 	public Funcionario findById(Integer id) {
@@ -80,13 +71,6 @@ public class FuncionarioService {
 		
 			validaPorCpfEEmailECnh(objDTO);	
 			updateData(newObj, objDTO);
-			
-			try{ // deleta endereço vinculado ao funcionario atual
-				Query query = manager.createNativeQuery("DELETE FROM ENDERECO WHERE FUNCIONARIO_ID = " + newObj.getId());
-				query.executeUpdate();
-	        }catch(Exception e){
-	            e.printStackTrace();
-	        }
 			
 			Municipio mun = new Municipio(objDTO.getMunicipioId(), null, null);
 			Endereco end = new Endereco(objDTO.getEnderecoId(), objDTO.getLogradouro(), objDTO.getNumero(), objDTO.getComplemento(),objDTO.getBairro(), objDTO.getCep(),

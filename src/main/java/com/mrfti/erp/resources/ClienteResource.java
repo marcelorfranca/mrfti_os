@@ -27,7 +27,6 @@ public class ClienteResource {
 		List<Cliente> list = clienteService.findAll();
 		List<ClienteDTO> listDTO = list.stream().map(obj -> new ClienteDTO(obj)).collect(Collectors.toList()); //converter DTO
 		return ResponseEntity.ok().body(listDTO);
-		
 
 	}
 			
