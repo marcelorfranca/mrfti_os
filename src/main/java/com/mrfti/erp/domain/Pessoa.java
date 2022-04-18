@@ -2,10 +2,16 @@ package com.mrfti.erp.domain;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -13,6 +19,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.mrfti.erp.domain.enums.Perfil;
 
 @Entity
 @Inheritance(strategy=InheritanceType.JOINED)
@@ -36,10 +43,19 @@ public abstract class Pessoa implements Serializable {
 	protected String telefone3;
 	
 	
+	protected String senha;
+	
+	
+	@ElementCollection(fetch = FetchType.EAGER) // qdo der get no banco a lista de perfis devera vir com o usuario
+	@CollectionTable(name = "PERFIS")// Vai criar uma tabela no bd com os perfis
+	protected Set<Integer> perfis  = new HashSet<>(); // Set impede dois valores iguais 
+	
 	public Pessoa() {
+		super();
+		addPerfil(Perfil.CLIENTE);
 	}
 
-	public Pessoa(Integer id, String nome, String email, LocalDate dataInclusao, String telefone1, String telefone2, String telefone3) {
+	public Pessoa(Integer id, String nome, String email, LocalDate dataInclusao, String telefone1, String telefone2, String telefone3, String senha) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -48,6 +64,8 @@ public abstract class Pessoa implements Serializable {
 		this.telefone1 = telefone1;
 		this.telefone2 = telefone2;
 		this.telefone3 = telefone3;
+		this.senha = senha;
+		addPerfil(Perfil.CLIENTE);
 	}
 
 	public Integer getId() {
@@ -109,7 +127,24 @@ public abstract class Pessoa implements Serializable {
 	public void setTelefone3(String telefone3) {
 		this.telefone3 = telefone3;
 	}
+	
+	
+	public String getSenha() {
+		return senha;
+	}
 
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
+	public Set<Perfil> getPerfis() { // tipo Perfil altado para Integer. Chamado o metodo la de Perfil
+		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+	}
+
+	public void addPerfil(Perfil perfil) { // alterado para add e lista
+		this.perfis.add(perfil.getCodigo());
+	}
+	
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);

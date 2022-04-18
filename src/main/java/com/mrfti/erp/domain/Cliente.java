@@ -4,13 +4,16 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mrfti.erp.domain.dtos.ClienteDTO;
 import com.mrfti.erp.domain.enums.TipoCliente;
+import com.mrfti.erp.domain.enums.Perfil;
 
 @Entity
 public class Cliente extends Pessoa{
@@ -18,7 +21,8 @@ public class Cliente extends Pessoa{
 	private static final long serialVersionUID = 1L;
 	
 	@Column(unique = true)
-	private String cpfOrCnpj;
+	protected String cpfOrCnpj;
+	
 	private TipoCliente tipoCliente;
 	
 	@JsonIgnore			
@@ -33,18 +37,30 @@ public class Cliente extends Pessoa{
 	private List<Endereco> enderecos = new ArrayList<>();
 	
 	public Cliente() {
+		super();
+		addPerfil(Perfil.CLIENTE); // sempre que um novo cliente for criado ja atribui o perfil
 	}
 
-	
-
-	public Cliente(Integer id, String nome, String email, LocalDate dataInclusao, String telefone1,String telefone2, String telefone3, String cpfOrCnpj,
+	public Cliente(Integer id, String nome, String email, LocalDate dataInclusao, String telefone1,String telefone2, String telefone3, String senha, String cpfOrCnpj,
 			TipoCliente tipoCliente) {
-		super(id, nome, email, dataInclusao,  telefone1, telefone2, telefone3);
+		super(id, nome, email, dataInclusao,  telefone1, telefone2, telefone3, senha);
 		this.cpfOrCnpj = cpfOrCnpj;
 		this.tipoCliente = tipoCliente;
 	}
 
-
+	public Cliente(ClienteDTO obj) {
+		super();
+		this.cpfOrCnpj = obj.getCpfOrCnpj();
+		this.tipoCliente = obj.getTipoCliente();
+		this.nome = obj.getNome();
+		this.email = obj.getEmail();
+		this.dataInclusao = obj.getDataInclusao();
+		this.telefone1 = obj.getTelefone1();
+		this.telefone2 = obj.getTelefone2();
+		this.telefone3 = obj.getTelefone3();
+		this.senha = obj.getSenha();
+		this.perfis = obj.getPerfis().stream().map(x -> x.getCodigo()).collect(Collectors.toSet());
+	}
 
 	public String getCpfOrCnpj() {
 		return cpfOrCnpj;
@@ -87,7 +103,6 @@ public class Cliente extends Pessoa{
 		this.enderecos = enderecos;
 	}
 
-
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -107,6 +122,9 @@ public class Cliente extends Pessoa{
 		Cliente other = (Cliente) obj;
 		return Objects.equals(cpfOrCnpj, other.cpfOrCnpj);
 	}
+
+
+	
 
 	
 	

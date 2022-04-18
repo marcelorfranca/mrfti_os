@@ -3,16 +3,21 @@ package com.mrfti.erp.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.mrfti.erp.domain.Endereco;
 import com.mrfti.erp.domain.Funcionario;
 import com.mrfti.erp.domain.Municipio;
 import com.mrfti.erp.domain.Pessoa;
 import com.mrfti.erp.domain.dtos.FuncionarioDTO;
+import com.mrfti.erp.domain.enums.Perfil;
 import com.mrfti.erp.repositories.EnderecoRepository;
 import com.mrfti.erp.repositories.FuncionarioRepository;
 import com.mrfti.erp.repositories.PessoaRepository;
@@ -20,15 +25,18 @@ import com.mrfti.erp.services.exceptions.DataIntegrityViolationException;
 import com.mrfti.erp.services.exceptions.ObjectnotFoundException;
 
 @Service
+@Transactional
 public class FuncionarioService {
 	
+	 @PersistenceContext
+	 private EntityManager manager;
+
 	
 	@Autowired
 	private FuncionarioRepository repository;
 	
 	@Autowired
 	private PessoaRepository pessoaRepository;
-	
 	
 	@Autowired
 	private EnderecoRepository enderecoRepository;
@@ -67,7 +75,15 @@ public class FuncionarioService {
 		
 		objDTO.setId(id);
 		
-		Funcionario newObj = findById(objDTO.getId()); // lança uma exceção caso id nao exista
+		Funcionario newObj = findById(id); // lança uma exceção caso id nao exista
+		
+		try{
+				Query query = manager.createNativeQuery("DELETE FROM PERFIS WHERE PESSOA_ID = " + newObj.getId()); // limpa a tabela perfis do func atual, evitando duplicidade
+				query.executeUpdate(); 
+		 }catch(Exception e){
+		 e.printStackTrace(); }
+		 
+		
 		
 			validaPorCpfEEmailECnh(objDTO);	
 			updateData(newObj, objDTO);
@@ -102,6 +118,28 @@ public class FuncionarioService {
 		newObj.setTelefone1(objDTO.getTelefone1());
 		newObj.setTelefone2(objDTO.getTelefone2());
 		newObj.setTelefone3(objDTO.getTelefone3());
+		newObj.addPerfil(Perfil.toEnum(objDTO.getPerfil1()));
+		
+		if(objDTO.getPerfil1() == null) {
+			newObj.addPerfil(Perfil.TECNICO);
+		}else {
+			newObj.addPerfil(Perfil.toEnum(objDTO.getPerfil1()));
+		}
+		
+		
+		if(objDTO.getPerfil2() != null) {
+			newObj.addPerfil(Perfil.toEnum(objDTO.getPerfil2()));
+			if(objDTO.getPerfil3() != null) {
+				newObj.addPerfil(Perfil.toEnum(objDTO.getPerfil3()));
+				if(objDTO.getPerfil4() != null) {
+					newObj.addPerfil(Perfil.toEnum(objDTO.getPerfil4()));
+				}
+			}
+		}
+			
+		
+		if(!objDTO.getSenha().equals(newObj.getSenha()))  // verifica se senha não é igual a que veio do banco, se for deve ser gravada pois foi alterada.
+			newObj.setSenha(objDTO.getSenha());
 	}
 	
 	
@@ -127,13 +165,11 @@ public class FuncionarioService {
 		
 		
 		Optional<Pessoa> obj2 = pessoaRepository.findByEmail(objDTO.getEmail());
-		obj2 = pessoaRepository.findByEmail(objDTO.getEmail());
 		if(obj2.isPresent() && obj2.get().getId() != objDTO.getId()) {
 			throw new DataIntegrityViolationException("EMAIL já cadastrado no sistema!");
 		}
 		
 		Optional<Funcionario> obj3 = repository.findByCnh(objDTO.getCnh());
-		obj3 = repository.findByCnh(objDTO.getCnh());
 		if(obj3.isPresent() && obj3.get().getId() != objDTO.getId()) {
 			throw new DataIntegrityViolationException("CNH já cadastrado no sistema!");
 		}

@@ -2,6 +2,9 @@ package com.mrfti.erp.domain.dtos;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
@@ -13,6 +16,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mrfti.erp.domain.Cargo;
 import com.mrfti.erp.domain.Funcionario;
 import com.mrfti.erp.domain.Setor;
+import com.mrfti.erp.domain.enums.Perfil;
 
 public class FuncionarioDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -31,6 +35,11 @@ public class FuncionarioDTO implements Serializable {
 	protected String telefone1;
 	protected String telefone2;
 	protected String telefone3;
+	
+	@Length(min=3, max=15, message="O tamanho deve ser entre 3 e 15 caracteres")
+	protected String senha;
+	
+	protected Set<Integer> perfis  = new HashSet<>();
 	
 	@JsonFormat(pattern = "dd/MM/yyyy")
 	protected LocalDate dataInclusao = LocalDate.now();
@@ -67,12 +76,21 @@ public class FuncionarioDTO implements Serializable {
 	private String bairro;
 	private String cep;
 	
+	
 	private Integer enderecoId;
 	
 	private Integer municipioId;
 	
+	private Integer perfil1;
+	
+	private Integer perfil2;
+	private Integer perfil3;
+	private Integer perfil4;
+	
 	
 	public FuncionarioDTO() {
+		super();
+		addPerfil(Perfil.TECNICO);
 	}
 
 	public FuncionarioDTO(Funcionario obj) {
@@ -83,6 +101,8 @@ public class FuncionarioDTO implements Serializable {
 		this.telefone1 = obj.getTelefone1();
 		this.telefone2 = obj.getTelefone2();
 		this.telefone3 = obj.getTelefone3();
+		this.senha = obj.getSenha();
+		this.perfis = obj.getPerfis().stream().map(x -> x.getCodigo()).collect(Collectors.toSet());
 		this.dataInclusao = obj.getDataInclusao();
 		this.matricula = obj.getMatricula();
 		this.ativo = obj.getAtivo();
@@ -94,6 +114,7 @@ public class FuncionarioDTO implements Serializable {
 		this.fotoCnh = obj.getFotoCnh();
 		this.cargo = obj.getCargo();
 		this.setor = obj.getSetor();
+		addPerfil(Perfil.TECNICO);
 	
 	}
 
@@ -287,6 +308,54 @@ public class FuncionarioDTO implements Serializable {
 
 	public void setEnderecoId(Integer enderecoId) {
 		this.enderecoId = enderecoId;
+	}
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha(String senha) {
+		this.senha = senha;
+	}
+
+	public Set<Perfil> getPerfis() {
+		return perfis.stream().map(x -> Perfil.toEnum(x)).collect(Collectors.toSet());
+	}
+
+	public void addPerfil(Perfil perfil) {
+		this.perfis.add(perfil.getCodigo());
+	}
+
+	public Integer getPerfil1() {
+		return perfil1;
+	}
+
+	public void setPerfil1(Integer perfil1) {
+		this.perfil1 = perfil1;
+	}
+
+	public Integer getPerfil2() {
+		return perfil2;
+	}
+
+	public void setPerfil2(Integer perfil2) {
+		this.perfil2 = perfil2;
+	}
+
+	public Integer getPerfil3() {
+		return perfil3;
+	}
+
+	public void setPerfil3(Integer perfil3) {
+		this.perfil3 = perfil3;
+	}
+
+	public Integer getPerfil4() {
+		return perfil4;
+	}
+
+	public void setPerfil4(Integer perfil4) {
+		this.perfil4 = perfil4;
 	}
 	
 	

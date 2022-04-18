@@ -54,10 +54,6 @@ public class Os implements Serializable{
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
 	
-	@ManyToOne
-	@JoinColumn(name = "usuario_id")
-	private Usuario usuario;
-	
 	
 	@ManyToOne
 	@JoinColumn(name="endereco_os_id")
@@ -83,7 +79,7 @@ public class Os implements Serializable{
 
 	public Os(Integer id, Integer numOs, LocalDate dataAbertura, LocalDate dataAgendamento, LocalDate dataSolicitacao,
 			String observacao, ResultadoOs resultado, Turno turnoAgendado, StatusOs status, Funcionario funcionario,
-			Cliente cliente, Usuario usuario, Endereco enderecoOs, Setor setor, Zona zona) {
+			Cliente cliente, Endereco enderecoOs, Setor setor, Zona zona) {
 		super();
 		this.id = id;
 		this.numOs = numOs;
@@ -96,7 +92,6 @@ public class Os implements Serializable{
 		this.status = status;
 		this.funcionario = funcionario;
 		this.cliente = cliente;
-		this.usuario = usuario;
 		this.enderecoOs = enderecoOs;
 		this.setor = setor;
 		this.zona = zona;
@@ -185,16 +180,6 @@ public class Os implements Serializable{
 		this.cliente = cliente;
 	}
 
-	
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-
-	
 	public Endereco getEnderecoOs() {
 		return enderecoOs;
 	}

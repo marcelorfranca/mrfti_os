@@ -2,7 +2,6 @@
 package com.mrfti.erp.domain;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -26,7 +25,7 @@ public class Servico implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Integer id;
 	protected String descricao;
-	protected BigDecimal preco;
+	protected Double preco;
 	
 	
 	//Orçamento
@@ -65,7 +64,7 @@ public class Servico implements Serializable {
 	public Servico() {
 	}
 
-	public Servico(Integer id, String descricao, BigDecimal preco) {
+	public Servico(Integer id, String descricao, Double preco) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
@@ -89,11 +88,11 @@ public class Servico implements Serializable {
 	}
 
 	@JsonIgnore // ocultando na saida do postmam para test
-	public BigDecimal getPreco() {
+	public Double getPreco() {
 		return preco;
 	}
 
-	public void setPreco(BigDecimal preco) {
+	public void setPreco(Double preco) {
 		this.preco = preco;
 	}
 

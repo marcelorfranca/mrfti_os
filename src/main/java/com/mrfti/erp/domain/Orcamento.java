@@ -1,8 +1,11 @@
 package com.mrfti.erp.domain;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 
@@ -18,6 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.mrfti.erp.domain.dtos.OrcamentoDTO;
 
 @Entity
 public class Orcamento implements Serializable{
@@ -33,10 +37,10 @@ public class Orcamento implements Serializable{
 	private Integer numOrcamento;
 	
 	@JsonFormat(pattern = "dd/MM/yyyy")
-	private LocalDate dataOrcamento;
+	private Date dataOrcamento;
 	
-	private Character aprovado = 'N'; // S ou N
-	private Integer desconto;
+	private Character aprovado; // S ou N
+	private Double desconto;
 	private String observacao;
 	private String contato;
 	private String observacaoRecibo;
@@ -45,10 +49,6 @@ public class Orcamento implements Serializable{
 	@OneToOne(cascade=CascadeType.ALL, mappedBy="orcamento")
 	private Pagamento pagamento;
 	
-	
-	@ManyToOne
-	@JoinColumn(name="endereco_orcamento_id")
-	private Endereco enderecoOrcamento;
 	
 	@ManyToOne
 	@JoinColumn(name = "setor_id") // relacionando as classes
@@ -63,10 +63,6 @@ public class Orcamento implements Serializable{
 	@JoinColumn(name = "cliente_id")
 	private Cliente cliente;
 	
-	@ManyToOne
-	@JoinColumn(name = "usuario_id")
-	private Usuario usuario;
-	
 	
 	
 	@OneToMany(mappedBy="id.orcamento")
@@ -78,9 +74,9 @@ public class Orcamento implements Serializable{
 	public Orcamento() {
 	}
 
-	public Orcamento(Integer id, Integer numOrcamento, LocalDate dataOrcamento, Character aprovado, Integer desconto,
+	public Orcamento(Integer id, Integer numOrcamento, Date dataOrcamento, Character aprovado, Double desconto,
 			String observacao, String contato, String observacaoRecibo, Endereco enderecoOrcamento, Setor setor,
-			Funcionario funcionario, Cliente cliente, Usuario usuario) {
+			Funcionario funcionario, Cliente cliente) {
 		super();
 		this.id = id;
 		this.numOrcamento = numOrcamento;
@@ -90,13 +86,38 @@ public class Orcamento implements Serializable{
 		this.observacao = observacao;
 		this.contato = contato;
 		this.observacaoRecibo = observacaoRecibo;
-		this.enderecoOrcamento = enderecoOrcamento;
 		this.setor = setor;
 		this.funcionario = funcionario;
 		this.cliente = cliente;
-		this.usuario = usuario;
 	}
 
+	
+	public Orcamento(OrcamentoDTO obj) {
+		this.id = obj.getId();
+		this.numOrcamento = obj.getNumOrcamento();
+		this.dataOrcamento = obj.getDataOrcamento();
+		this.aprovado = obj.getAprovado();
+		this.desconto = obj.getDesconto();
+		this.observacao = obj.getObservacao();
+		this.contato = obj.getContato();
+		this.observacaoRecibo = obj.getObservacaoRecibo();
+		this.pagamento = obj.getPagamento();
+		this.setor = obj.getSetor();
+		this.funcionario = obj.getFuncionario();
+		this.cliente = obj.getCliente();
+	}
+	
+	public double getValorTotal() {
+		double soma = 0.0;
+		for (ItemOrcamento ip : itens) {
+			soma = soma + ip.getSubTotal();
+		}
+		for (ServicoOrcamento sp : servicos){
+			soma = soma + sp.getSubTotal();
+		}
+		return soma;
+	}
+	
 	public Integer getId() {
 		return id;
 	}
@@ -113,11 +134,11 @@ public class Orcamento implements Serializable{
 		this.numOrcamento = numOrcamento;
 	}
 
-	public LocalDate getDataOrcamento() {
+	public Date getDataOrcamento() {
 		return dataOrcamento;
 	}
 
-	public void setDataOrcamento(LocalDate dataOrcamento) {
+	public void setDataOrcamento(Date dataOrcamento) {
 		this.dataOrcamento = dataOrcamento;
 	}
 
@@ -129,11 +150,11 @@ public class Orcamento implements Serializable{
 		this.aprovado = aprovado;
 	}
 
-	public Integer getDesconto() {
+	public Double getDesconto() {
 		return desconto;
 	}
 
-	public void setDesconto(Integer desconto) {
+	public void setDesconto(Double desconto) {
 		this.desconto = desconto;
 	}
 
@@ -169,15 +190,6 @@ public class Orcamento implements Serializable{
 	public void setPagamento(Pagamento pagamento) {
 		this.pagamento = pagamento;
 	}
-
-	
-	public Endereco getEnderecoOrcamento() {
-		return enderecoOrcamento;
-	}
-
-	public void setEnderecoOrcamento(Endereco enderecoOrcamento) {
-		this.enderecoOrcamento = enderecoOrcamento;
-	}
 	
 	
 	public Setor getSetor() {
@@ -205,16 +217,6 @@ public class Orcamento implements Serializable{
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-
-	
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-
 	
 	public Set<ItemOrcamento> getItens() {
 		return itens;
@@ -252,7 +254,30 @@ public class Orcamento implements Serializable{
 	}
 
 	
-	
+	@Override
+	public String toString() {
+		NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+		StringBuilder builder = new StringBuilder();
+		builder.append("Orçamento número: ");
+		builder.append(getNumOrcamento());
+		builder.append(", Data do orçamento: ");
+		builder.append(sdf.format(getDataOrcamento()));
+		builder.append(", Cliente: ");
+		builder.append(getCliente().getNome());
+		builder.append(", Situação do pagamento: ");
+		builder.append(getPagamento().getEstadoPgto());
+		builder.append("\nDetalhes:\n");
+		for (ItemOrcamento io : getItens()) {
+			builder.append(io.toString());
+		}
+		for (ServicoOrcamento so : getServicos()) {
+			builder.append(so.toString());
+		}
+		builder.append("Valor total: ");
+		builder.append(nf.format(getValorTotal()));
+		return builder.toString();
+	}
 	
 	
 	

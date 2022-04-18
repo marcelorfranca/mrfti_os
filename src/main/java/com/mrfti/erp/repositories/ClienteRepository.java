@@ -8,4 +8,6 @@ import com.mrfti.erp.domain.Cliente;
 @Repository
 public interface ClienteRepository extends JpaRepository<Cliente, Integer>{
 
+	//Optional<Cliente> findByCpfOrCnpj(String cpfOrCnpj);
+	
 }

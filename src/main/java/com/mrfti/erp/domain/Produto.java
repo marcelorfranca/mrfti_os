@@ -2,7 +2,6 @@
 package com.mrfti.erp.domain;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -28,7 +27,7 @@ public class Produto implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Integer id;
 	protected String descricao;
-	protected BigDecimal preco;
+	protected Double preco;
 	
 	@JsonIgnore
 	public List<Orcamento> getOrcamentos() {
@@ -44,14 +43,6 @@ public class Produto implements Serializable {
 	@JoinColumn(name="categoriaProduto_id")
 	protected CategoriaProduto categoriaProduto;
 	
-	// neste sistema um produto somente possui uma categoria
-	//@JsonIgnore
-	//@ManyToMany
-	//@JoinTable(name= "PRODUTO_CATEGORIA_JOIN", 
-		//	joinColumns = @JoinColumn(name = "produto_id"),
-		//	inverseJoinColumns = @JoinColumn(name = "categoriaProduto_id"))
-	//private List<CategoriaProduto> categoriaProdutos = new ArrayList<>();
-	
 	
 	@ManyToOne
 	@JoinColumn(name="unidadeMedida_id")
@@ -64,7 +55,7 @@ public class Produto implements Serializable {
 	public Produto() {
 	}
 
-	public Produto(Integer id, String descricao, BigDecimal preco, CategoriaProduto categoriaProduto,
+	public Produto(Integer id, String descricao, Double preco, CategoriaProduto categoriaProduto,
 			UnidadeMedida unidadeMedida) {
 		super();
 		this.id = id;
@@ -91,11 +82,11 @@ public class Produto implements Serializable {
 	}
 
 	@JsonIgnore // teste para ocultar o preço no postmam
-	public BigDecimal getPreco() {
+	public Double getPreco() {
 		return preco;
 	}
 
-	public void setPreco(BigDecimal preco) {
+	public void setPreco(Double preco) {
 		this.preco = preco;
 	}
 

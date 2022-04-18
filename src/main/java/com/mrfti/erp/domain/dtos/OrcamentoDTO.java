@@ -1,16 +1,14 @@
 package com.mrfti.erp.domain.dtos;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.util.Date;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mrfti.erp.domain.Cliente;
-import com.mrfti.erp.domain.Endereco;
 import com.mrfti.erp.domain.Funcionario;
 import com.mrfti.erp.domain.Orcamento;
 import com.mrfti.erp.domain.Pagamento;
 import com.mrfti.erp.domain.Setor;
-import com.mrfti.erp.domain.Usuario;
 
 public class OrcamentoDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -19,26 +17,22 @@ public class OrcamentoDTO implements Serializable {
 	private Integer numOrcamento;
 	
 	@JsonFormat(pattern = "dd/MM/yyyy")
-	private LocalDate dataOrcamento;
+	private Date dataOrcamento;
 	
-	private Character aprovado = 'N'; // S ou N
-	private Integer desconto;
+	private Character aprovado; // S ou N
+	private Double desconto;
 	private String observacao;
 	private String contato;
 	private String observacaoRecibo;
 	
 	private Pagamento pagamento;
 	
-	private Endereco enderecoOrcamento;
 	
 	private Setor setor;
 	
 	private Funcionario funcionario;
 	
 	private Cliente cliente;
-	
-	private Usuario usuario;
-	
 	
 	
 	public OrcamentoDTO() {
@@ -54,11 +48,9 @@ public class OrcamentoDTO implements Serializable {
 		this.contato = obj.getContato();
 		this.observacaoRecibo = obj.getObservacaoRecibo();
 		this.pagamento = obj.getPagamento();
-		this.enderecoOrcamento = obj.getEnderecoOrcamento();
 		this.setor = obj.getSetor();
 		this.funcionario = obj.getFuncionario();
 		this.cliente = obj.getCliente();
-		this.usuario = obj.getUsuario();
 	}
 
 	public Integer getId() {
@@ -77,11 +69,11 @@ public class OrcamentoDTO implements Serializable {
 		this.numOrcamento = numOrcamento;
 	}
 
-	public LocalDate getDataOrcamento() {
+	public Date getDataOrcamento() {
 		return dataOrcamento;
 	}
 
-	public void setDataOrcamento(LocalDate dataOrcamento) {
+	public void setDataOrcamento(Date dataOrcamento) {
 		this.dataOrcamento = dataOrcamento;
 	}
 
@@ -93,11 +85,11 @@ public class OrcamentoDTO implements Serializable {
 		this.aprovado = aprovado;
 	}
 
-	public Integer getDesconto() {
+	public Double getDesconto() {
 		return desconto;
 	}
 
-	public void setDesconto(Integer desconto) {
+	public void setDesconto(Double desconto) {
 		this.desconto = desconto;
 	}
 
@@ -133,14 +125,6 @@ public class OrcamentoDTO implements Serializable {
 		this.pagamento = pagamento;
 	}
 
-	public Endereco getEnderecoOrcamento() {
-		return enderecoOrcamento;
-	}
-
-	public void setEnderecoOrcamento(Endereco enderecoOrcamento) {
-		this.enderecoOrcamento = enderecoOrcamento;
-	}
-
 	public Setor getSetor() {
 		return setor;
 	}
@@ -164,19 +148,6 @@ public class OrcamentoDTO implements Serializable {
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
 	}
-
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
-	}
-
-		
-	
-	
-	
 	
 	
 }

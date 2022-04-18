@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -14,6 +15,7 @@ import javax.persistence.OneToMany;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.mrfti.erp.domain.dtos.FuncionarioDTO;
+import com.mrfti.erp.domain.enums.Perfil;
 
 @Entity
 public class Funcionario extends Pessoa{
@@ -72,14 +74,16 @@ public class Funcionario extends Pessoa{
 		
 		
 		public Funcionario() {
+			super();
+			addPerfil(Perfil.CLIENTE); 
 		}
 
 		
 		
 		
-		public Funcionario(Integer id, String nome, String email, LocalDate dataInclusao, String telefone1,String telefone2, String telefone3, String matricula, Character ativo,
+		public Funcionario(Integer id, String nome, String email, LocalDate dataInclusao, String telefone1,String telefone2, String telefone3, String senha ,String matricula, Character ativo,
 				Character operacional, LocalDate admissao, LocalDate demissao, String cpf, String cnh , String fotoCnh , Setor setor, Cargo cargo) {
-			super(id, nome, email, dataInclusao, telefone1, telefone2, telefone3);
+			super(id, nome, email, dataInclusao, telefone1, telefone2, telefone3, senha);
 			this.matricula = matricula;
 			this.ativo = ativo;
 			this.operacional = operacional;
@@ -111,6 +115,9 @@ public class Funcionario extends Pessoa{
 			this.telefone1 = obj.getTelefone1();
 			this.telefone2 = obj.getTelefone2();
 			this.telefone3 = obj.getTelefone3();
+			this.senha = obj.getSenha();
+			this.perfis = obj.getPerfis().stream().map(x -> x.getCodigo()).collect(Collectors.toSet());
+			
 		}
 
 

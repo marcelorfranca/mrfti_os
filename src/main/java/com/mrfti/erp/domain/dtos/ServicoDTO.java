@@ -1,7 +1,6 @@
 package com.mrfti.erp.domain.dtos;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 
 import com.mrfti.erp.domain.Servico;
 
@@ -11,7 +10,7 @@ public class ServicoDTO  implements Serializable {
 
 	protected Integer id;
 	protected String descricao;
-	protected BigDecimal preco;
+	protected Double preco;
 	
 	
 	public ServicoDTO() {
@@ -46,12 +45,12 @@ public class ServicoDTO  implements Serializable {
 	}
 
 
-	public BigDecimal getPreco() {
+	public Double getPreco() {
 		return preco;
 	}
 
 
-	public void setPreco(BigDecimal preco) {
+	public void setPreco(Double preco) {
 		this.preco = preco;
 	}
 	

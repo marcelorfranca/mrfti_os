@@ -12,7 +12,6 @@ import com.mrfti.erp.domain.Funcionario;
 import com.mrfti.erp.domain.Os;
 import com.mrfti.erp.domain.ServicoOs;
 import com.mrfti.erp.domain.Setor;
-import com.mrfti.erp.domain.Usuario;
 import com.mrfti.erp.domain.Zona;
 import com.mrfti.erp.domain.enums.ResultadoOs;
 import com.mrfti.erp.domain.enums.StatusOs;
@@ -45,8 +44,6 @@ public class OsDTO implements Serializable{
 	
 	private Cliente cliente;
 	
-	private Usuario usuario;
-	
 	private Endereco enderecoOs;
 	
 	private Setor setor;
@@ -70,7 +67,6 @@ public class OsDTO implements Serializable{
 		this.status = obj.getStatus();
 		this.funcionario = obj.getFuncionario();
 		this.cliente = obj.getCliente();
-		this.usuario = obj.getUsuario();
 		this.enderecoOs = obj.getEnderecoOs();
 		this.setor = obj.getSetor();
 		this.zona = obj.getZona();
@@ -162,14 +158,6 @@ public class OsDTO implements Serializable{
 
 	public void setCliente(Cliente cliente) {
 		this.cliente = cliente;
-	}
-
-	public Usuario getUsuario() {
-		return usuario;
-	}
-
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
 	}
 
 	public Endereco getEnderecoOs() {

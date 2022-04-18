@@ -3,6 +3,7 @@ package com.mrfti.erp.services;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Arrays;
+import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,11 +29,9 @@ import com.mrfti.erp.domain.ServicoOs;
 import com.mrfti.erp.domain.Setor;
 import com.mrfti.erp.domain.Uf;
 import com.mrfti.erp.domain.UnidadeMedida;
-import com.mrfti.erp.domain.Usuario;
 import com.mrfti.erp.domain.Veiculo;
 import com.mrfti.erp.domain.Zona;
 import com.mrfti.erp.domain.enums.EstadoPagamento;
-import com.mrfti.erp.domain.enums.Perfil;
 import com.mrfti.erp.domain.enums.StatusOs;
 import com.mrfti.erp.domain.enums.TipoCliente;
 import com.mrfti.erp.domain.enums.Turno;
@@ -55,9 +54,9 @@ import com.mrfti.erp.repositories.ServicoRepository;
 import com.mrfti.erp.repositories.SetorRepository;
 import com.mrfti.erp.repositories.UfRepository;
 import com.mrfti.erp.repositories.UnidadeMedidaRepository;
-import com.mrfti.erp.repositories.UsuarioRepository;
 import com.mrfti.erp.repositories.VeiculoRepository;
 import com.mrfti.erp.repositories.ZonaRepository;
+import com.mrfti.erp.domain.enums.Perfil;
 
 @Service
 public class DBService {
@@ -88,8 +87,6 @@ public class DBService {
 	private SetorRepository setorRepository;
 	@Autowired
 	private CargoRepository cargoRepository;
-	@Autowired
-	private UsuarioRepository usuarioRepository;
 	@Autowired
 	private OrcamentoRepository orcamentoRepository;
 	@Autowired
@@ -140,9 +137,9 @@ public class DBService {
 		CategoriaProduto cat2 = new CategoriaProduto(null, "Gas");
 		CategoriaProduto cat3 = new CategoriaProduto(null, "Escritório");
 		
-		Produto produ1 = new Produto(null,"TUBO DE COBRE 28MM CLASSE E 5 MTS", new BigDecimal(238.50) , cat2, uni1);
-		Produto produ2 = new Produto(null, "Papel A4", new BigDecimal(70.01) , cat3, uni4);
-		Produto produ3 = new Produto(null, "Diesel", new BigDecimal(4.17) , cat2, uni2);
+		Produto produ1 = new Produto(null,"TUBO DE COBRE 28MM CLASSE E 5 MTS", (double)238.50 , cat2, uni1);
+		Produto produ2 = new Produto(null, "Papel A4", (double) 70.01 , cat3, uni4);
+		Produto produ3 = new Produto(null, "Diesel", (double)4.17 , cat2, uni2);
 		
 		cat2.getProdutos().addAll(Arrays.asList(produ1));
 		cat3.getProdutos().addAll(Arrays.asList(produ2));
@@ -158,13 +155,13 @@ public class DBService {
 		produtoRepository.saveAll(Arrays.asList(produ1, produ2, produ3));
 		
 		// criando o CLiente
-		Cliente cl1 = new Cliente(null, "Maria da Silva", "maria@gmail.com", LocalDate.now(),  "213361-3200" , null , null , "02343342741", TipoCliente.PESSOAFISICA);
-		Cliente cl2 = new Cliente(null, "Jurema Santos", "jurema@hotmail.com", LocalDate.of(2022, 2, 10), "21-9987-4321" , null , null , "623.689.620-85", TipoCliente.PESSOAFISICA);
+		Cliente cl1 = new Cliente(null, "Maria da Silva", "maria@gmail.com", LocalDate.now(),  "213361-3200" , null , null , "1234" ,"02343342741", TipoCliente.PESSOAFISICA);
+		Cliente cl2 = new Cliente(null, "Jurema Santos", "jurema@hotmail.com", LocalDate.of(2022, 2, 10), "21-9987-4321" , null , null , "123" ,"623.689.620-85", TipoCliente.PESSOAFISICA);
 		
 		
 		// criando registro na tabela endereço
 		Endereco e1 = new Endereco(null, "Av dos Italianos", "1146", "casa 28", "Coelho Neto", "21510-105", null ,cl1, mun1);
-		Endereco e2 = new Endereco(null, "Rua Uranos", "96", null, "Olaria", "21511-145", null ,cl1, mun1);
+		Endereco e2 = new Endereco(null, "Rua Uranos", "96", null, "Olaria", "21511-145", null ,cl2, mun1);
 				
 		//Relacionando o cliente aos endereços
 		cl1.getEnderecos().addAll(Arrays.asList(e2));
@@ -203,31 +200,38 @@ public class DBService {
 		Zona zo2 = new Zona(null, "Zona Sul");
 		
 		
-		Funcionario func1 = new Funcionario(null, "Vagner Moura", "vagner@gmail.com", LocalDate.of(2022, 04, 14), null , null , null ,"1266" , 'S', 'S', LocalDate.of(2022, 03, 01), null, "02343342741", "541258922" , null ,set1, ca1);
-		Funcionario func2 = new Funcionario(null, "João da Silva", "joao@gmail.com", LocalDate.of(2022, 03, 29),"219871.1525" , null , null ,"1265" , 'S', 'S', LocalDate.of(2022, 03, 01), null, "71677752076", "3265222666" , null ,set1, ca1);
+		Funcionario func1 = new Funcionario(null, "Vagner Moura", "vagner@gmail.com", LocalDate.of(2022, 04, 14), null , null , null ,"1234" ,"1266" , 'S', 'S', LocalDate.of(2022, 03, 01), null, "02343342741", "541258922" , null ,set1, ca1);
+		func1.addPerfil(Perfil.ADMIN);
+		Funcionario func2 = new Funcionario(null, "João da Silva", "joao@gmail.com", LocalDate.of(2022, 03, 29),"219871.1525" , null , null, "123" ,"1265" , 'S', 'S', LocalDate.of(2022, 03, 01), null, "71677752076", "3265222666" , null ,set1, ca1);
 		
-		
+		Endereco e3 = new Endereco(null, "Av dos Italianos", "1196", null, "Coelho Neto", "21511-105", func1 , null, mun1);
+		Endereco e4 = new Endereco(null, "Rua dos Prazeres", "69", null, "Coelho Neto", "21511-105", func2 , null, mun1);
 		
 		
 		setorRepository.saveAll(Arrays.asList(set1,set2));
 		cargoRepository.saveAll(Arrays.asList(ca1,ca2, ca3));
 		zonaRepository.saveAll(Arrays.asList(zo1,zo2));
 		
+		func1.getEnderecos().addAll(Arrays.asList(e3));
+		func2.getEnderecos().addAll(Arrays.asList(e4));
+		
 		funcionarioRepository.saveAll(Arrays.asList(func1,func2));
+		enderecoRepository.saveAll(Arrays.asList(e3,e4));
 		
-		Usuario user1 = new Usuario(null, "Jorge Boca", "jorge@gmail.com", LocalDate.of(2021, 12, 20), null, null, null, "123", Perfil.CLIENTE);
+		Date dataOrc = new Date();
 		
-		usuarioRepository.saveAll(Arrays.asList(user1));
-		
-		
-		Orcamento orc1 = new Orcamento(null, 1, LocalDate.of(2022, 2, 15), 'S', 15,"Teste de inserção Orçamento", "Sr José", "Agradecemos a pref.", e2, set2 , func2, cl1, user1);
-		Orcamento orc2 = new Orcamento(null, 2, LocalDate.of(2022, 3, 19), 'S', 10, "Orçamento dois", "Juca", "Obrigado pela pref.", e1, set1, func1, cl2, user1);
+		Orcamento orc1 = new Orcamento(null, 1, dataOrc, 'S', (double) 15, "Teste de inserção Orçamento", "Sr José", "Agradecemos a pref.", e2, set2 , func2, cl1);
+		Orcamento orc2 = new Orcamento(null, 2, dataOrc, 'S', (double) 10, "Orçamento dois", "Juca", "Obrigado pela pref.", e1, set1, func1, cl2);
 		
 		
 		Pagamento pagto1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, orc1, 6);
 		orc1.setPagamento(pagto1);
 		
-		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, orc2, LocalDate.of(2022, 3, 18) , null);
+		Date dataVenc = new Date();
+		
+		
+		
+		Pagamento pagto2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, orc2, dataVenc , null);
 		orc2.setPagamento(pagto2);
 		
 		//associar o cliente ao orçamento
@@ -237,16 +241,17 @@ public class DBService {
 		orcamentoRepository.saveAll(Arrays.asList(orc1,orc2));
 		pagamentoRepository.saveAll(Arrays.asList(pagto1,pagto2));
 		
-		ItemOrcamento iorc1 = new ItemOrcamento(orc1, produ1, 10, new BigDecimal(134.50) , 3, 1);
-		ItemOrcamento iorc2 = new ItemOrcamento(orc2, produ3, 15, new BigDecimal(41.00), 1, 2);
-		ItemOrcamento iorc3 = new ItemOrcamento(orc1, produ2, 15, new BigDecimal(15.31), 5, 1);
+		ItemOrcamento iorc1 = new ItemOrcamento(orc1, produ1, (double) 10, 134.50, 3, 1);
+		ItemOrcamento iorc2 = new ItemOrcamento(orc2, produ3, (double) 15, 41.00, 1, 2);
+		ItemOrcamento iorc3 = new ItemOrcamento(orc1, produ2, (double) 15, 15.31, 5, 1);
 		
 		
-		Servico serv1 = new Servico(null,"Conversao de fogão", new BigDecimal(340.00));
-		Servico serv2 = new Servico(null,"Teste de Estanqueidade", new BigDecimal(90.45));
 		
-		ServicoOrcamento serOrc1 = new ServicoOrcamento(orc1, serv1, 5, new BigDecimal(240.00), 1, 1);
-		ServicoOrcamento serOrc2 = new ServicoOrcamento(orc1, serv2, 0, new BigDecimal(90.45), 2, 1);
+		Servico serv1 = new Servico(null,"Conversao de fogão", 340.00);
+		Servico serv2 = new Servico(null,"Teste de Estanqueidade", 90.45);
+		
+		ServicoOrcamento serOrc1 = new ServicoOrcamento(orc1, serv1, (double) 5, (double) 240.00, 1, 1);
+		ServicoOrcamento serOrc2 = new ServicoOrcamento(orc1, serv2, (double) 0, (double) 90.45, 2, 1);
 		
 		servicoRepository.saveAll(Arrays.asList(serv1,serv2));
 		servicoOrcamentoRepository.saveAll(Arrays.asList(serOrc1, serOrc2));
@@ -266,7 +271,7 @@ public class DBService {
 		//OS
 		
 		Os os1 = new Os(null, 1, LocalDate.of(2022, 3, 12), LocalDate.of(2022, 3, 8), LocalDate.of(2022, 3, 8), "Minha primeira OS no H2", 
-				null, Turno.TARDE, StatusOs.ABERTO, func2, cl1, user1, e2, set2, zo2);
+				null, Turno.TARDE, StatusOs.ABERTO, func2, cl1, e2, set2, zo2);
 		
 		ServicoOs servOs1 = new ServicoOs(os1, serv2, 0, new BigDecimal(90.45), 1, 1);
 		ServicoOs servOs2 = new ServicoOs(os1, serv1, 5, new BigDecimal(340.00), 1 , 1);

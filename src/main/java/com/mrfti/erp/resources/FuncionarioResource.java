@@ -54,7 +54,6 @@ public class FuncionarioResource {
 	@PutMapping(value = "/{id}")
 	public ResponseEntity<FuncionarioDTO> update(@PathVariable Integer id,@Valid @RequestBody FuncionarioDTO objDTO) {
 		Funcionario obj = service.update(id, objDTO);
-		
 		return ResponseEntity.ok().body(new FuncionarioDTO(obj));
 		
 	}

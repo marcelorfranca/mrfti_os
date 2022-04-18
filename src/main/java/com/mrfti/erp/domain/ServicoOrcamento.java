@@ -1,7 +1,8 @@
 package com.mrfti.erp.domain;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.Objects;
 
 import javax.persistence.EmbeddedId;
@@ -17,8 +18,8 @@ public class ServicoOrcamento implements Serializable {
 	@EmbeddedId
 	private ServicoOrcamentoPK id = new ServicoOrcamentoPK();
 	
-	private Integer desconto;
-	private BigDecimal preco;
+	private Double desconto;
+	private Double preco;
 	private Integer quantidade;
 	private Integer numOrcamento;
 	
@@ -26,7 +27,7 @@ public class ServicoOrcamento implements Serializable {
 	public ServicoOrcamento() {
 	}
 
-	public ServicoOrcamento(Orcamento orcamento, Servico servico, Integer desconto, BigDecimal preco, Integer quantidade,
+	public ServicoOrcamento(Orcamento orcamento, Servico servico, Double desconto, Double preco, Integer quantidade,
 			Integer numOrcamento) {
 		super();
 		id.setOrcamento(orcamento);
@@ -37,14 +38,30 @@ public class ServicoOrcamento implements Serializable {
 		this.numOrcamento = numOrcamento;
 	}
 
+	
+	public double getSubTotal() {
+		return (preco - desconto) * quantidade;
+	}
+	
 	@JsonIgnore
 	public Orcamento getOrcamento() {
 		return id.getOrcamento();
 	}
 	
+	public void setOrcamento(Orcamento orcamento) {
+		id.setOrcamento(orcamento);
+	}
+	
+	public Integer getIdServico() {
+		return id.getServico().getId(); // não havia sido implementado
+	}
 	
 	public String getServico() {
 		return id.getServico().getDescricao(); // alterei para String e getDescricao evitando loop de serialização.
+	}
+	
+	public void setServico(Servico servico) {
+		id.setServico(servico);
 	}
 	
 	
@@ -56,19 +73,19 @@ public class ServicoOrcamento implements Serializable {
 		this.id = id;
 	}
 
-	public Integer getDesconto() {
+	public Double getDesconto() {
 		return desconto;
 	}
 
-	public void setDesconto(Integer desconto) {
+	public void setDesconto(Double desconto) {
 		this.desconto = desconto;
 	}
 
-	public BigDecimal getPreco() {
+	public Double getPreco() {
 		return preco;
 	}
 
-	public void setPreco(BigDecimal preco) {
+	public void setPreco(Double preco) {
 		this.preco = preco;
 	}
 
@@ -105,7 +122,31 @@ public class ServicoOrcamento implements Serializable {
 		return Objects.equals(id, other.id);
 	}
 
-	
+	/*
+	 * @Override public String toString() { return "ServicoOrcamento [desconto=" +
+	 * desconto + ", preco=" + preco + ", quantidade=" + quantidade +
+	 * ", numOrcamento=" + numOrcamento + ", getSubTotal()=" + getSubTotal() + "]";
+	 * }
+	 */
+
+	@Override
+	public String toString() {
+		NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+		StringBuilder builder = new StringBuilder();
+		builder.append(getServico());
+		builder.append(", Qte: ");
+		builder.append(getQuantidade());
+		builder.append(", Preço unitário: ");
+		builder.append(nf.format(getPreco()));
+		builder.append(", Nto Orçamento: ");
+		builder.append(getNumOrcamento());
+		builder.append(", Desconto: ");
+		builder.append(getDesconto());
+		builder.append(", Subtotal: ");
+		builder.append(nf.format(getSubTotal()));
+		builder.append("\n");
+		return builder.toString();
+	}
 	
 	
 }
