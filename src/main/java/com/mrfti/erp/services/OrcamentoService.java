@@ -3,6 +3,9 @@ package com.mrfti.erp.services;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,8 +27,12 @@ import com.mrfti.erp.services.exceptions.DataIntegrityViolationException;
 import com.mrfti.erp.services.exceptions.ObjectnotFoundException;
 
 @Service
+@Transactional
 public class OrcamentoService {
-
+	
+	 @PersistenceContext
+	 private EntityManager manager;
+	
 	@Autowired
 	private BoletoService boletoService;
 	
@@ -66,19 +73,23 @@ public class OrcamentoService {
 		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return orcamentoRepository.findAll(pageRequest);
 	}
-
+	
+	
 	
 	@Transactional
 	public Orcamento insert(Orcamento obj) {
+	
+		
+		Integer maxId = orcamentoRepository.findAll().stream().map(Orcamento::getNumOrcamento).max(Integer::compare).orElse(0);// captura o maior numOrcamento
 		
 		obj.setId(null);
 		obj.setDataOrcamento(obj.getDataOrcamento());
-		obj.setAprovado('N');
+		obj.setAprovado(null);
 		obj.setDesconto(obj.getDesconto());
 		obj.setObservacao(obj.getObservacao());
 		obj.setObservacaoRecibo(obj.getObservacaoRecibo());
 		obj.setContato(obj.getContato());
-		obj.setNumOrcamento(obj.getNumOrcamento()); // pegar o maior e somar 1
+		obj.setNumOrcamento(maxId + 1); 
 		obj.setSetor(obj.getSetor());
 		obj.setFuncionario(obj.getFuncionario());
 		obj.setCliente(obj.getCliente());
@@ -111,14 +122,41 @@ public class OrcamentoService {
 		return obj;
 	}
 	
-	public Orcamento update(Integer id, @Valid OrcamentoDTO objDTO) {
+	public Orcamento update(Integer id, @Valid Orcamento obj) {
 		
-		objDTO.setId(id);
+		obj.setId(id);
 		
 		Orcamento newObj = findById(id); // lança uma exceção caso id nao exista
 		
+			
+		LimparItensEServicos(newObj);
+			
+			
+			for (ItemOrcamento io : obj.getItens()) {
+				io.setDesconto(io.getDesconto());
+				io.setProduto(produtoService.findById(io.getProduto().getId()));
+				io.setPreco(io.getPreco());
+				io.setQuantidade(io.getQuantidade());
+				io.setNumOrcamento(obj.getNumOrcamento());
+				io.setOrcamento(obj);
+			}
+			
+			itemOrcamentoRepository.saveAll(obj.getItens());
+			
+			for (ServicoOrcamento so : obj.getServicos()) {
+				so.setDesconto(so.getDesconto());
+				so.setServico(servicoService.findById(so.getIdServico()));
+				so.setPreco(so.getPreco());
+				so.setQuantidade(so.getQuantidade());
+				so.setNumOrcamento(obj.getNumOrcamento());
+				so.setOrcamento(obj);
+			}
+			
+			servicoOrcamentoRepository.saveAll(obj.getServicos());
+			
+			
 		
-			updateData(newObj, objDTO);
+			updateData(newObj, obj);
 		
 			
 			
@@ -129,33 +167,48 @@ public class OrcamentoService {
 		
 	}
 	
-	private void updateData(Orcamento newObj,OrcamentoDTO objDTO) {
-		newObj.setNumOrcamento(objDTO.getNumOrcamento());
-		newObj.setDataOrcamento(objDTO.getDataOrcamento());
-		newObj.setAprovado(objDTO.getAprovado());
-		newObj.setDesconto(objDTO.getDesconto());
-		newObj.setObservacao(objDTO.getObservacao());
-		newObj.setObservacaoRecibo(objDTO.getObservacaoRecibo());
-		newObj.setContato(objDTO.getContato());
-		newObj.setSetor(objDTO.getSetor());
-		newObj.setCliente(objDTO.getCliente());
-		newObj.setFuncionario(objDTO.getFuncionario());
-		newObj.setPagamento(objDTO.getPagamento());
-		// falta aqui pgtos, produtos e serviços
+	private void updateData(Orcamento newObj,Orcamento obj) {
+		newObj.setDataOrcamento(obj.getDataOrcamento());
+		newObj.setAprovado(obj.getAprovado());
+		newObj.setDesconto(obj.getDesconto());
+		newObj.setObservacao(obj.getObservacao());
+		newObj.setObservacaoRecibo(obj.getObservacaoRecibo());
+		newObj.setContato(obj.getContato());
+		newObj.setSetor(obj.getSetor());
+		newObj.setCliente(obj.getCliente());
+		newObj.setFuncionario(obj.getFuncionario());
+		newObj.setPagamento(obj.getPagamento());
+		
+		
 	}
 	
 	
-	@SuppressWarnings("unlikely-arg-type")
 	public void delete(Integer id) {
 		Orcamento obj = findById(id);
 
-		if (obj.getAprovado().equals("S")) {
-			throw new DataIntegrityViolationException("Orçamento Aprovado não pode ser deletado!");
+		if (obj.getAprovado() != null) {
+			if (obj.getAprovado() == 'S') {
+				throw new DataIntegrityViolationException("Orçamento Aprovado não pode ser deletado!");
+			}
 		}
+		LimparItensEServicos(obj);
 		
 		orcamentoRepository.deleteById(id);
 	}
 	
+	// deleta Itens e serviços do orçamento vinculado ao Orçamento atual 
+	public void LimparItensEServicos(Orcamento newObj) {
+		
+		try{ 
+		 	 Query query = manager.createNativeQuery("DELETE FROM ITEM_ORCAMENTO WHERE ORCAMENTO_ID = " +
+			  newObj.getId()); query.executeUpdate(); }catch(Exception e){
+				  		e.printStackTrace(); }
+			try{ 
+			 	 Query query = manager.createNativeQuery("DELETE FROM SERVICO_ORCAMENTO WHERE ORCAMENTO_ID = " +
+				  newObj.getId()); query.executeUpdate(); }catch(Exception e){
+					  		e.printStackTrace(); }
+		
+	}
 	
 	
 }

@@ -65,9 +65,9 @@ public class OrcamentoResource {
 	}
 	
 	@PutMapping(value = "/{id}")
-	public ResponseEntity<OrcamentoDTO> update(@PathVariable Integer id,@Valid @RequestBody OrcamentoDTO objDTO) {
-		Orcamento obj = orcamentoService.update(id, objDTO);
-		return ResponseEntity.ok().body(new OrcamentoDTO(obj));
+	public ResponseEntity<OrcamentoDTO> update(@PathVariable Integer id,@Valid @RequestBody Orcamento obj) {
+		Orcamento newObj = orcamentoService.update(id, obj);
+		return ResponseEntity.ok().body(new OrcamentoDTO(newObj));
 		
 	}
 	
